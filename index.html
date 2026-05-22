@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The Sweepstake · 2026 World Cup</title>
+<meta name="description" content="Live draw for our 2026 FIFA World Cup sweepstake." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-0: #0a1426;
+    --bg-1: #0e1d3a;
+    --ink: #f4ecd8;
+    --ink-dim: #b9af96;
+    --gold: #e8c468;
+    --gold-bright: #ffd97a;
+    --crimson: #c9322f;
+    --grass: #2f7d4a;
+    --line: rgba(244, 236, 216, 0.14);
+    --display: "Bowlby One", "Fraunces", serif;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "DM Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-0);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top, #16315c 0%, transparent 55%),
+      radial-gradient(ellipse at bottom, #1a0f2e 0%, transparent 60%),
+      var(--bg-0);
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  /* grain overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+
+  /* subtle pitch lines */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 80px, rgba(232, 196, 104, 0.025) 80px 81px);
+  }
+
+  main {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 22px 80px;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  header.masthead {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 0 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .kicker .dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--crimson);
+    margin-right: 8px;
+    animation: blink 1.4s ease-in-out infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+  }
+
+  h1.title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(40px, 9vw, 96px);
+    line-height: 0.92;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  }
+
+  h1 .ampersand {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--gold-bright);
+    font-size: 0.7em;
+    vertical-align: 0.05em;
+    margin: 0 0.05em;
+  }
+
+  .subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(15px, 2.4vw, 19px);
+    color: var(--ink-dim);
+    max-width: 540px;
+    line-height: 1.5;
+    margin: 6px 0 0;
+  }
+
+  /* ---------- COUNTDOWN ---------- */
+
+  .countdown-stage {
+    margin: 40px 0;
+    padding: 36px 24px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(232,196,104,0.04), transparent);
+    text-align: center;
+    position: relative;
+  }
+
+  .countdown-stage::before,
+  .countdown-stage::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--gold);
+  }
+  .countdown-stage::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .countdown-stage::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+  .countdown-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 18px;
+  }
+
+  .countdown-digits {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .digit-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+  }
+
+  .digit {
+    font-family: var(--display);
+    font-size: clamp(44px, 11vw, 80px);
+    color: var(--gold-bright);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow:
+      0 0 18px rgba(255, 217, 122, 0.25),
+      0 2px 0 rgba(0,0,0,0.5);
+  }
+
+  .digit-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-top: 8px;
+  }
+
+  .draw-time-note {
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ---------- DRAFT STAGE ---------- */
+
+  .draft-stage {
+    display: none;
+    margin: 30px 0;
+  }
+
+  .draft-stage.active { display: block; }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 22px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .round-badge {
+    font-family: var(--display);
+    font-size: clamp(22px, 4.5vw, 32px);
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .round-badge small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: var(--gold);
+    font-weight: normal;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .pot-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 2px;
+  }
+
+  /* The reveal stage */
+
+  .reveal-arena {
+    background: linear-gradient(180deg, #142648 0%, #0c1c38 100%);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 30px 22px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 24px 60px -20px rgba(0,0,0,0.5);
+  }
+
+  .reveal-arena::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center top, rgba(232,196,104,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .picker-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .picker-name strong {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 28px;
+    display: block;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+
+  .reveal-window {
+    margin: 24px 0 18px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    perspective: 800px;
+  }
+
+  .team-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    min-width: 220px;
+    position: relative;
+  }
+
+  .team-flag {
+    font-size: 56px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    transition: transform 0.2s;
+  }
+
+  .team-name {
+    font-family: var(--display);
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .team-card.locked {
+    animation: lockIn 0.6s ease-out;
+  }
+
+  .team-card.locked .team-flag {
+    transform: scale(1.15);
+  }
+
+  @keyframes lockIn {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .draw-button {
+    appearance: none;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: var(--bg-0);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    box-shadow: 0 6px 20px -8px rgba(232,196,104,0.6);
+  }
+
+  .draw-button:hover:not(:disabled) {
+    background: var(--gold-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(255,217,122,0.7);
+  }
+
+  .draw-button:active:not(:disabled) { transform: translateY(0); }
+
+  .draw-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .draw-status {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    min-height: 16px;
+  }
+
+  /* spinning carousel during reveal */
+  .spinning .team-card {
+    animation: spinFlash 0.08s linear;
+  }
+
+  @keyframes spinFlash {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  /* ---------- PICK ORDER & PROGRESS ---------- */
+
+  .pick-order {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 6px;
+    margin: 26px 0 0;
+  }
+
+  .pick-chip {
+    border: 1px solid var(--line);
+    padding: 8px 6px;
+    text-align: center;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.02);
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .pick-chip .chip-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .pick-chip .chip-name {
+    font-family: var(--display);
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .pick-chip.current {
+    border-color: var(--gold);
+    background: rgba(232,196,104,0.12);
+    box-shadow: 0 0 0 1px var(--gold), 0 0 20px -5px rgba(232,196,104,0.5);
+  }
+
+  .pick-chip.done {
+    opacity: 0.45;
+  }
+
+  .pick-chip.done .chip-name {
+    text-decoration: line-through;
+    text-decoration-color: var(--gold);
+  }
+
+  /* ---------- RESULTS BOARD ---------- */
+
+  .results-board {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .player-card {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 18px 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+    position: relative;
+  }
+
+  .player-card.is-current {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold);
+  }
+
+  .player-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .player-card h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .player-card .team-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+
+  .player-teams {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .player-teams li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateX(-4px);
+    animation: slideIn 0.4s ease-out forwards;
+  }
+
+  .player-teams li .flag {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .player-teams li .pot-tag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ---------- COMPLETE BANNER ---------- */
+
+  .complete-banner {
+    display: none;
+    text-align: center;
+    margin: 40px 0;
+    padding: 36px 24px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(232,196,104,0.10), rgba(232,196,104,0.02));
+  }
+
+  .complete-banner.active { display: block; animation: bannerIn 0.8s ease-out; }
+
+  @keyframes bannerIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .complete-banner .kicker { color: var(--gold-bright); }
+  .complete-banner h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(28px, 6vw, 44px);
+    margin: 4px 0 8px;
+    color: var(--ink);
+  }
+  .complete-banner p {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+
+  /* ---------- INFO STRIP ---------- */
+
+  .info-strip {
+    margin-top: 50px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+  }
+
+  .info-block h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+
+  .info-block p {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    opacity: 0.6;
+  }
+
+  /* utility */
+  .hidden { display: none !important; }
+
+  @media (max-width: 600px) {
+    main { padding: 20px 16px 60px; }
+    .countdown-digits { gap: 8px; }
+    .digit-block { min-width: 58px; }
+    .team-card { min-width: 180px; }
+    .pick-order { grid-template-columns: repeat(4, 1fr); }
+    .stage-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="masthead">
+    <div class="kicker"><span class="dot"></span>Live · The Lads' Lounge Broadcast</div>
+    <h1 class="title">The Draw<span class="ampersand">&amp;</span>Quartering</h1>
+    <p class="subtitle">A sweepstake draw for the 2026 FIFA World Cup. Eight gentlemen. Six teams apiece. One trophy worth pretending we care about.</p>
+  </header>
+
+  <!-- COUNTDOWN PHASE -->
+  <section class="countdown-stage" id="countdown-stage">
+    <div class="countdown-label">Draw commences in</div>
+    <div class="countdown-digits">
+      <div class="digit-block">
+        <div class="digit" id="cd-h">00</div>
+        <div class="digit-label">Hours</div>
+      </div>
+      <div class="digit-block">
+        <div class="digit" id="cd-m">00</div>
+        <div class="digit-label">Minutes</div>
+      </div>
+      <div class="digit-block">
+        <div class="digit" id="cd-s">00</div>
+        <div class="digit-label">Seconds</div>
+      </div>
+    </div>
+    <div class="draw-time-note" id="draw-time-note">Draw begins at 16:00 BST</div>
+  </section>
+
+  <!-- DRAFT PHASE -->
+  <section class="draft-stage" id="draft-stage">
+    <div class="stage-header">
+      <div class="round-badge">
+        <small id="round-label">Round 1 of 6</small>
+        <span id="pot-label">Pot 1 · The Seeded Twelve</span>
+      </div>
+      <div class="pot-badge" id="pick-counter">Pick 1 of 48</div>
+    </div>
+
+    <div class="reveal-arena">
+      <div class="picker-name">
+        On the clock
+        <strong id="current-picker">—</strong>
+      </div>
+      <div class="reveal-window" id="reveal-window">
+        <div class="team-card" id="team-card">
+          <div class="team-flag" id="team-flag">🏆</div>
+          <div class="team-name" id="team-name">Ready</div>
+        </div>
+      </div>
+      <button class="draw-button" id="draw-button">Make the Pick</button>
+      <div class="draw-status" id="draw-status">Press to draw the next team</div>
+    </div>
+
+    <div class="pick-order" id="pick-order"></div>
+  </section>
+
+  <!-- COMPLETE BANNER -->
+  <section class="complete-banner" id="complete-banner">
+    <div class="kicker">Draw complete</div>
+    <h2>The fates are sealed</h2>
+    <p>Forty-eight teams. Eight portfolios. May the best ball-watcher win.</p>
+  </section>
+
+  <!-- RESULTS BOARD (always rendered, populates as draw progresses) -->
+  <section class="results-board" id="results-board"></section>
+
+  <!-- INFO -->
+  <section class="info-strip">
+    <div class="info-block">
+      <h4>The method</h4>
+      <p>Four FIFA-seeded pots of twelve. Snake draft across six rounds — order randomised once, then 1→8, 8→1, 1→8 and so on. Everyone leaves with a balanced spread of giants, scrappers, and dark horses.</p>
+    </div>
+    <div class="info-block">
+      <h4>Why it's fair</h4>
+      <p>No-one ends up with four no-hopers. No-one hoards the favourites. The snake means going first isn't a permanent advantage — pick last in Pot 1, pick first in Pot 2.</p>
+    </div>
+    <div class="info-block">
+      <h4>The reveal</h4>
+      <p>Each pick spins through the remaining pot and locks on one. The result is deterministic — anyone watching this page sees exactly the same draw.</p>
+    </div>
+  </section>
+
+  <footer>The Sweepstake · MMXXVI</footer>
+</main>
+
+<script>
+  // =====================================================================
+  // DATA
+  // =====================================================================
+
+  const PLAYERS = ["Rob", "Evan", "Jimmy", "Harry", "Sandy", "Joe", "Jord", "Josh"];
+
+  // Official 2026 FIFA World Cup draw pots, with all 6 playoff winners
+  // resolved. UEFA playoff winners: Sweden, Türkiye, Bosnia & Herzegovina,
+  // Czechia. Inter-confederation: Iraq, DR Congo.
+  const POTS = {
+    1: [
+      { name: "Spain",        flag: "🇪🇸" },
+      { name: "Argentina",    flag: "🇦🇷" },
+      { name: "France",       flag: "🇫🇷" },
+      { name: "England",      flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+      { name: "Brazil",       flag: "🇧🇷" },
+      { name: "Portugal",     flag: "🇵🇹" },
+      { name: "Netherlands",  flag: "🇳🇱" },
+      { name: "Belgium",      flag: "🇧🇪" },
+      { name: "Germany",      flag: "🇩🇪" },
+      { name: "USA",          flag: "🇺🇸" },
+      { name: "Mexico",       flag: "🇲🇽" },
+      { name: "Canada",       flag: "🇨🇦" },
+    ],
+    2: [
+      { name: "Croatia",      flag: "🇭🇷" },
+      { name: "Morocco",      flag: "🇲🇦" },
+      { name: "Colombia",     flag: "🇨🇴" },
+      { name: "Uruguay",      flag: "🇺🇾" },
+      { name: "Switzerland",  flag: "🇨🇭" },
+      { name: "Japan",        flag: "🇯🇵" },
+      { name: "Senegal",      flag: "🇸🇳" },
+      { name: "Iran",         flag: "🇮🇷" },
+      { name: "South Korea",  flag: "🇰🇷" },
+      { name: "Ecuador",      flag: "🇪🇨" },
+      { name: "Austria",      flag: "🇦🇹" },
+      { name: "Australia",    flag: "🇦🇺" },
+    ],
+    3: [
+      { name: "Norway",       flag: "🇳🇴" },
+      { name: "Panama",       flag: "🇵🇦" },
+      { name: "Egypt",        flag: "🇪🇬" },
+      { name: "Algeria",      flag: "🇩🇿" },
+      { name: "Scotland",     flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+      { name: "Paraguay",     flag: "🇵🇾" },
+      { name: "Tunisia",      flag: "🇹🇳" },
+      { name: "Ivory Coast",  flag: "🇨🇮" },
+      { name: "Uzbekistan",   flag: "🇺🇿" },
+      { name: "Qatar",        flag: "🇶🇦" },
+      { name: "Saudi Arabia", flag: "🇸🇦" },
+      { name: "South Africa", flag: "🇿🇦" },
+    ],
+    4: [
+      { name: "Jordan",       flag: "🇯🇴" },
+      { name: "Cape Verde",   flag: "🇨🇻" },
+      { name: "Ghana",        flag: "🇬🇭" },
+      { name: "Curaçao",      flag: "🇨🇼" },
+      { name: "Haiti",        flag: "🇭🇹" },
+      { name: "New Zealand",  flag: "🇳🇿" },
+      { name: "Sweden",       flag: "🇸🇪" },
+      { name: "Türkiye",      flag: "🇹🇷" },
+      { name: "Bosnia & Herzegovina", flag: "🇧🇦" },
+      { name: "Czechia",      flag: "🇨🇿" },
+      { name: "Iraq",         flag: "🇮🇶" },
+      { name: "DR Congo",     flag: "🇨🇩" },
+    ],
+  };
+
+  const POT_LABELS = {
+    1: "Pot 1 · The Seeded Twelve",
+    2: "Pot 2 · The Contenders",
+    3: "Pot 3 · The Dark Horses",
+    4: "Pot 4 · The Wild Cards",
+  };
+
+  // =====================================================================
+  // DRAW CONFIG
+  // =====================================================================
+
+  // Target: today at 16:00 Europe/London. We compute it in UTC.
+  // For BST (currently in effect on May 22, 2026 — UK is in BST from late
+  // March until late October), 16:00 BST == 15:00 UTC.
+  // We'll detect today's date and lock the target to that date at 15:00 UTC.
+  const TARGET_LOCAL_HOUR_BST = 16; // 4 PM UK time
+  function getDrawTimestamp() {
+    // Use UTC date components. On 22 May 2026, BST is in effect so 16:00 BST = 15:00 UTC.
+    // We construct the target at 15:00 UTC for today.
+    const now = new Date();
+    const target = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      15, 0, 0, 0
+    ));
+    return target.getTime();
+  }
+  const DRAW_TS = getDrawTimestamp();
+
+  // =====================================================================
+  // DETERMINISTIC RANDOMNESS
+  // =====================================================================
+  // Seeded so every viewer sees the exact same draw. Seed = the draw
+  // timestamp, so it's stable across all clients regardless of when they
+  // load the page (as long as they load it for the same day's draw).
+
+  function mulberry32(seed) {
+    return function() {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      let t = seed;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function seededShuffle(arr, rng) {
+    const out = arr.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  }
+
+  // Build the full deterministic draw plan.
+  function buildDrawPlan() {
+    const rng = mulberry32(DRAW_TS);
+
+    // 1. Randomise pick order once.
+    const pickOrder = seededShuffle(PLAYERS, rng);
+
+    // 2. For each pot, generate a shuffled sequence of teams. Draws across
+    //    pots are independent so the spectacle still has surprise.
+    const potOrders = {};
+    for (const p of [1, 2, 3, 4]) {
+      potOrders[p] = seededShuffle(POTS[p], rng);
+    }
+
+    // 3. Construct snake schedule. 6 rounds total. Rounds 1-3 use pots 1-3
+    //    once each (snake by round). Then rounds 4-6 use pots 2-4 again
+    //    (wait — we need 6 teams per person, 4 pots × 12 teams = 48 total).
+    //    8 players × 6 picks = 48. So each player gets 6 picks.
+    //    Pots have 12 teams each = 1.5 teams per player. That doesn't
+    //    cleanly divide. So we use the snake across a single 6×8 grid,
+    //    and for each pick we draw from the *current* pot (cycling pots
+    //    every 8 picks). 6 rounds × 8 picks = 48. Pots cycle: rounds 1-2
+    //    pot 1+2, rounds 3-4 pot 2+3... no. Cleaner:
+    //
+    //    Simplest fair version: 4 "phases" (one per pot), each phase
+    //    contains all 8 players picking once with snake direction
+    //    alternating. That's 32 picks → 4 teams each. We need 6 teams.
+    //
+    //    Right approach: do snake order across 6 rounds. Each round
+    //    everyone picks once. For pot allocation: rounds 1,3,5 pull from
+    //    pots 1,3,(2 again) ... Actually we want EVERY player to get a
+    //    balanced spread. Best solution: each player must end up with
+    //    1 or 2 teams from each pot. With 12 teams in each pot and 8
+    //    players, that's 12/8 = 1.5 teams per pot per player. So 4
+    //    players get 2 from pot 1 and 4 get 1; same for each pot. Across
+    //    all 4 pots that averages to 6 per player. ✓
+    //
+    //    Final scheme: 6 rounds. Each round draws from one pot.
+    //      R1: Pot 1 (8 picks, 4 left in pot 1)
+    //      R2: Pot 1 leftovers (4) + Pot 2 (4) — 8 picks
+    //      R3: Pot 2 (remaining 8) — 8 picks
+    //      R4: Pot 3 (8 picks, 4 left)
+    //      R5: Pot 3 leftovers (4) + Pot 4 (4) — 8 picks
+    //      R6: Pot 4 (remaining 8) — 8 picks
+    //    Snake direction flips every round.
+
+    // Build a flat sequence of picks, each with {pot, team, picker}
+    const picks = [];
+    const potQueue = {
+      1: potOrders[1].slice(),
+      2: potOrders[2].slice(),
+      3: potOrders[3].slice(),
+      4: potOrders[4].slice(),
+    };
+
+    // Helper: pop next team from given pot
+    const draw = (pot) => potQueue[pot].shift();
+
+    // Schedule of which pot each of the 48 picks pulls from.
+    // Pots have 12 each → we just go 1×12, 2×12, 3×12, 4×12 sequentially.
+    const potSchedule = [];
+    for (const p of [1, 2, 3, 4]) {
+      for (let i = 0; i < 12; i++) potSchedule.push(p);
+    }
+
+    // Snake the picker order across 6 rounds.
+    for (let round = 0; round < 6; round++) {
+      const order = (round % 2 === 0) ? pickOrder : pickOrder.slice().reverse();
+      for (let i = 0; i < 8; i++) {
+        const globalIdx = round * 8 + i;
+        const pot = potSchedule[globalIdx];
+        const team = draw(pot);
+        picks.push({
+          round: round + 1,
+          pickInRound: i + 1,
+          globalPick: globalIdx + 1,
+          pot,
+          team,
+          picker: order[i],
+        });
+      }
+    }
+
+    return { pickOrder, picks };
+  }
+
+  const DRAW_PLAN = buildDrawPlan();
+
+  // =====================================================================
+  // STATE
+  // =====================================================================
+
+  let currentPickIdx = 0;
+  let isRevealing = false;
+  let drawStarted = false;
+
+  // Track each player's picks for the results board
+  const playerPicks = {};
+  PLAYERS.forEach(p => playerPicks[p] = []);
+
+  // =====================================================================
+  // ELEMENTS
+  // =====================================================================
+
+  const $ = (id) => document.getElementById(id);
+  const cdH = $("cd-h"), cdM = $("cd-m"), cdS = $("cd-s");
+  const drawTimeNote = $("draw-time-note");
+  const countdownStage = $("countdown-stage");
+  const draftStage = $("draft-stage");
+  const completeBanner = $("complete-banner");
+  const resultsBoard = $("results-board");
+  const pickOrderEl = $("pick-order");
+  const drawButton = $("draw-button");
+  const drawStatus = $("draw-status");
+  const currentPickerEl = $("current-picker");
+  const teamFlagEl = $("team-flag");
+  const teamNameEl = $("team-name");
+  const teamCardEl = $("team-card");
+  const revealWindow = $("reveal-window");
+  const roundLabel = $("round-label");
+  const potLabel = $("pot-label");
+  const pickCounter = $("pick-counter");
+
+  // =====================================================================
+  // INIT
+  // =====================================================================
+
+  function formatDrawTime() {
+    const d = new Date(DRAW_TS);
+    const opts = {
+      weekday: "long", day: "numeric", month: "long",
+      hour: "2-digit", minute: "2-digit",
+      timeZone: "Europe/London", hour12: false
+    };
+    drawTimeNote.textContent =
+      "Draw begins at " + d.toLocaleString("en-GB", opts) + " UK time";
+  }
+  formatDrawTime();
+
+  function renderPickOrder() {
+    pickOrderEl.innerHTML = "";
+    DRAW_PLAN.pickOrder.forEach((name, i) => {
+      const chip = document.createElement("div");
+      chip.className = "pick-chip";
+      chip.dataset.player = name;
+      chip.innerHTML = `<span class="chip-num">#${i + 1}</span><span class="chip-name">${name}</span>`;
+      pickOrderEl.appendChild(chip);
+    });
+  }
+
+  function renderResultsBoard() {
+    resultsBoard.innerHTML = "";
+    PLAYERS.forEach(name => {
+      const card = document.createElement("div");
+      card.className = "player-card";
+      card.id = `player-card-${name}`;
+      card.innerHTML = `
+        <div class="player-card-header">
+          <h3>${name}</h3>
+          <div class="team-count" data-name="${name}">0 / 6</div>
+        </div>
+        <ul class="player-teams" id="player-teams-${name}"></ul>
+      `;
+      resultsBoard.appendChild(card);
+    });
+  }
+
+  function updateCurrentPickerHighlight(player) {
+    document.querySelectorAll(".pick-chip").forEach(c => {
+      c.classList.toggle("current", c.dataset.player === player);
+    });
+    document.querySelectorAll(".player-card").forEach(c => {
+      c.classList.toggle("is-current", c.id === `player-card-${player}`);
+    });
+  }
+
+  function appendTeamToPlayer(player, team, pot) {
+    const ul = document.getElementById(`player-teams-${player}`);
+    const li = document.createElement("li");
+    li.style.animationDelay = "0s";
+    li.innerHTML = `
+      <span class="flag">${team.flag}</span>
+      <span class="team-text">${team.name}</span>
+      <span class="pot-tag">P${pot}</span>
+    `;
+    ul.appendChild(li);
+
+    playerPicks[player].push({ team, pot });
+    const counter = document.querySelector(`.team-count[data-name="${player}"]`);
+    counter.textContent = `${playerPicks[player].length} / 6`;
+  }
+
+  function updateHeader() {
+    if (currentPickIdx >= DRAW_PLAN.picks.length) return;
+    const pick = DRAW_PLAN.picks[currentPickIdx];
+    roundLabel.textContent = `Round ${pick.round} of 6`;
+    potLabel.textContent = POT_LABELS[pick.pot];
+    pickCounter.textContent = `Pick ${pick.globalPick} of 48`;
+    currentPickerEl.textContent = pick.picker;
+    updateCurrentPickerHighlight(pick.picker);
+  }
+
+  // =====================================================================
+  // COUNTDOWN
+  // =====================================================================
+
+  function tick() {
+    const now = Date.now();
+    const diff = DRAW_TS - now;
+
+    if (diff <= 0) {
+      cdH.textContent = "00";
+      cdM.textContent = "00";
+      cdS.textContent = "00";
+      if (!drawStarted) startDraw();
+      return;
+    }
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    cdH.textContent = String(h).padStart(2, "0");
+    cdM.textContent = String(m).padStart(2, "0");
+    cdS.textContent = String(s).padStart(2, "0");
+  }
+
+  setInterval(tick, 200);
+  tick();
+
+  // =====================================================================
+  // DRAW MECHANICS
+  // =====================================================================
+
+  function startDraw() {
+    drawStarted = true;
+    countdownStage.style.transition = "opacity 0.6s, transform 0.6s";
+    countdownStage.style.opacity = "0";
+    countdownStage.style.transform = "translateY(-12px)";
+    setTimeout(() => {
+      countdownStage.classList.add("hidden");
+      draftStage.classList.add("active");
+      updateHeader();
+    }, 600);
+  }
+
+  function setRevealReady() {
+    teamFlagEl.textContent = "🎲";
+    teamNameEl.textContent = "Ready";
+    drawStatus.textContent = "Press to draw the next team";
+    drawButton.disabled = false;
+    drawButton.textContent = "Make the Pick";
+  }
+
+  function setRevealFinished() {
+    drawStatus.textContent = "Draw complete";
+    drawButton.disabled = true;
+    drawButton.textContent = "All picks made";
+  }
+
+  // Spin animation: cycle through random teams from the current pot, slow
+  // down, then lock on the actual pick.
+  function spinAndReveal(pick) {
+    isRevealing = true;
+    drawButton.disabled = true;
+    drawStatus.textContent = "Drawing…";
+
+    const pot = POTS[pick.pot];
+    // Build a long sequence to flash through. Start fast, slow down.
+    const totalSpins = 22;
+    const sequence = [];
+    for (let i = 0; i < totalSpins - 1; i++) {
+      sequence.push(pot[Math.floor(Math.random() * pot.length)]);
+    }
+    sequence.push(pick.team); // last frame is the real one
+
+    // Easing: spin intervals grow from ~50ms to ~280ms.
+    const intervals = [];
+    for (let i = 0; i < totalSpins; i++) {
+      const t = i / (totalSpins - 1);
+      const eased = Math.pow(t, 2.2);
+      intervals.push(50 + eased * 280);
+    }
+
+    revealWindow.classList.add("spinning");
+    teamCardEl.classList.remove("locked");
+
+    let i = 0;
+    function step() {
+      if (i >= sequence.length) {
+        // Lock in
+        revealWindow.classList.remove("spinning");
+        teamCardEl.classList.add("locked");
+        teamFlagEl.textContent = pick.team.flag;
+        teamNameEl.textContent = pick.team.name;
+        drawStatus.textContent = `${pick.picker} picks ${pick.team.name}!`;
+        appendTeamToPlayer(pick.picker, pick.team, pick.pot);
+        isRevealing = false;
+        currentPickIdx++;
+
+        if (currentPickIdx >= DRAW_PLAN.picks.length) {
+          // Draw complete
+          setTimeout(() => {
+            completeBanner.classList.add("active");
+            setRevealFinished();
+            document.querySelectorAll(".pick-chip").forEach(c => {
+              c.classList.remove("current");
+              c.classList.add("done");
+            });
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            // Mark previous picker as done
+            const prev = pick.picker;
+            const allDone = DRAW_PLAN.picks
+              .slice(0, currentPickIdx)
+              .filter(p => p.picker === prev).length;
+            if (allDone >= 6) {
+              const chip = document.querySelector(`.pick-chip[data-player="${prev}"]`);
+              if (chip) chip.classList.add("done");
+            }
+            updateHeader();
+            setRevealReady();
+          }, 1200);
+        }
+        return;
+      }
+      const t = sequence[i];
+      teamFlagEl.textContent = t.flag;
+      teamNameEl.textContent = t.name;
+      setTimeout(step, intervals[i]);
+      i++;
+    }
+    step();
+  }
+
+  drawButton.addEventListener("click", () => {
+    if (isRevealing) return;
+    if (currentPickIdx >= DRAW_PLAN.picks.length) return;
+    const pick = DRAW_PLAN.picks[currentPickIdx];
+    spinAndReveal(pick);
+  });
+
+  // =====================================================================
+  // BOOT
+  // =====================================================================
+
+  renderPickOrder();
+  renderResultsBoard();
+
+  // If you load the page AFTER the draw time, skip straight to the draft
+  // stage so latecomers can still run through the draw.
+  if (Date.now() >= DRAW_TS) {
+    startDraw();
+  }
+</script>
+</body>
+</html>
