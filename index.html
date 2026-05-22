@@ -3,25 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>The Sweepstake · 2026 World Cup</title>
-<meta name="description" content="Live draw for our 2026 FIFA World Cup sweepstake." />
+<title>WE ARE EIGHT · Sweepstake 26</title>
+<meta name="description" content="Live sweepstake draw for the 2026 FIFA World Cup." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 <style>
   :root {
-    --bg-0: #0a1426;
-    --bg-1: #0e1d3a;
-    --ink: #f4ecd8;
-    --ink-dim: #b9af96;
-    --gold: #e8c468;
-    --gold-bright: #ffd97a;
-    --crimson: #c9322f;
-    --grass: #2f7d4a;
-    --line: rgba(244, 236, 216, 0.14);
-    --display: "Bowlby One", "Fraunces", serif;
-    --serif: "Fraunces", Georgia, serif;
-    --mono: "DM Mono", ui-monospace, monospace;
+    /* Lady Liberty Green — the official NYNJ World Cup 2026 colour */
+    --liberty: #4FB8A8;
+    --liberty-bright: #6FD4C2;
+    --liberty-deep: #2D7368;
+    --liberty-ink: #1A3D38;
+
+    /* Neutrals */
+    --black: #0a0a0a;
+    --off-black: #141414;
+    --char: #1f1f1f;
+    --bone: #f3efe6;
+    --bone-dim: #a8a298;
+    --white: #ffffff;
+
+    /* Accents from NYNJ palette */
+    --red: #E63946;
+    --gold: #F4C842;
+
+    /* Edges */
+    --line: rgba(243, 239, 230, 0.10);
+    --line-strong: rgba(243, 239, 230, 0.22);
+
+    /* Fonts */
+    --display: "Anton", "Arial Narrow", sans-serif;
+    --body: "Archivo", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
   }
 
   * { box-sizing: border-box; }
@@ -29,324 +45,479 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: var(--bg-0);
-    color: var(--ink);
-    font-family: var(--serif);
+    background: var(--black);
+    color: var(--bone);
+    font-family: var(--body);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
     min-height: 100vh;
   }
 
-  body {
-    background:
-      radial-gradient(ellipse at top, #16315c 0%, transparent 55%),
-      radial-gradient(ellipse at bottom, #1a0f2e 0%, transparent 60%),
-      var(--bg-0);
-    background-attachment: fixed;
-    position: relative;
-  }
-
-  /* grain overlay */
+  /* Grain texture */
   body::after {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
+    opacity: 0.06;
     z-index: 1;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 
-  /* subtle pitch lines */
+  /* Editorial vertical guide */
   body::before {
     content: "";
     position: fixed;
-    inset: 0;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--line);
     pointer-events: none;
     z-index: 0;
-    background:
-      repeating-linear-gradient(180deg, transparent 0 80px, rgba(232, 196, 104, 0.025) 80px 81px);
   }
 
   main {
     position: relative;
     z-index: 2;
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 28px 22px 80px;
   }
 
-  /* ---------- HEADER ---------- */
+  /* =============== TOP MARQUEE TICKER (signature DD.NYC element) =============== */
 
-  header.masthead {
+  .ticker {
+    background: var(--liberty);
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 11px 0;
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .ticker-track {
+    display: inline-block;
+    animation: ticker-scroll 38s linear infinite;
+    padding-left: 100%;
+  }
+
+  .ticker-track span {
+    padding: 0 24px;
+    display: inline-block;
+  }
+
+  .ticker-track .star {
+    color: var(--red);
+    display: inline-block;
+    transform: translateY(-1px);
+  }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* =============== TOP NAV BAR =============== */
+
+  .topbar {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    padding: 12px 0 28px;
+    padding: 16px 28px;
     border-bottom: 1px solid var(--line);
-    margin-bottom: 36px;
-    position: relative;
+    background: var(--black);
   }
 
-  .kicker {
+  .topbar-left {
     font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 0.32em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
+    color: var(--bone-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .kicker .dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
+  .topbar-left .live-dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: var(--crimson);
-    margin-right: 8px;
-    animation: blink 1.4s ease-in-out infinite;
-    vertical-align: middle;
+    background: var(--red);
+    animation: pulse 1.4s ease-in-out infinite;
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.35; transform: scale(0.85); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(230,57,70,0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(230,57,70,0); }
   }
 
-  h1.title {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(40px, 9vw, 96px);
-    line-height: 0.92;
-    margin: 0 0 10px;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  .icon-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--bone);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 9px 14px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
   }
 
-  h1 .ampersand {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 600;
-    color: var(--gold-bright);
-    font-size: 0.7em;
-    vertical-align: 0.05em;
-    margin: 0 0.05em;
+  .icon-btn:hover {
+    border-color: var(--liberty);
+    color: var(--liberty);
   }
 
-  .subtitle {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: clamp(15px, 2.4vw, 19px);
-    color: var(--ink-dim);
-    max-width: 540px;
-    line-height: 1.5;
-    margin: 6px 0 0;
-  }
+  /* =============== HERO =============== */
 
-  /* ---------- COUNTDOWN ---------- */
-
-  .countdown-stage {
-    margin: 40px 0;
-    padding: 36px 24px;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    background: linear-gradient(180deg, rgba(232,196,104,0.04), transparent);
-    text-align: center;
+  .hero {
+    padding: 70px 28px 50px;
+    border-bottom: 1px solid var(--line);
     position: relative;
   }
 
-  .countdown-stage::before,
-  .countdown-stage::after {
-    content: "";
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--gold);
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
   }
-  .countdown-stage::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-  .countdown-stage::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
-  .countdown-label {
+  .hero-meta .tag {
     font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-bottom: 18px;
+    color: var(--liberty);
   }
 
-  .countdown-digits {
+  .hero-meta .number {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+  }
+
+  /* Massive "WE ARE EIGHT" headline */
+  .hero-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(72px, 18vw, 240px);
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+
+  .hero-title .green {
+    color: var(--liberty);
+    display: inline-block;
+  }
+
+  .hero-title .stroke {
+    -webkit-text-stroke: 2px var(--bone);
+    color: transparent;
+    display: inline-block;
+  }
+
+  .hero-tagline {
     display: flex;
-    justify-content: center;
-    gap: 14px;
+    justify-content: space-between;
+    align-items: flex-end;
     flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-strong);
   }
 
-  .digit-block {
+  .hero-blurb {
+    font-family: var(--body);
+    font-size: clamp(14px, 1.6vw, 17px);
+    line-height: 1.5;
+    color: var(--bone-dim);
+    max-width: 520px;
+    margin: 0;
+  }
+
+  .hero-blurb strong {
+    color: var(--bone);
+    font-weight: 700;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+  }
+
+  .stat {
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: var(--display);
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 0.9;
+    color: var(--liberty);
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    margin-top: 6px;
+  }
+
+  /* =============== SECTION FRAME =============== */
+
+  .section {
+    padding: 60px 28px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--liberty);
+  }
+
+  .section-label::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background: var(--liberty);
+    transform: rotate(45deg);
+    display: inline-block;
+  }
+
+  /* =============== COUNTDOWN =============== */
+
+  .countdown-stage {
+    padding: 60px 28px 70px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .cd-cell {
+    padding: 32px 24px;
+    border-right: 1px solid var(--line-strong);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-width: 70px;
+    justify-content: space-between;
+    min-height: 200px;
   }
 
-  .digit {
-    font-family: var(--display);
-    font-size: clamp(44px, 11vw, 80px);
-    color: var(--gold-bright);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-    text-shadow:
-      0 0 18px rgba(255, 217, 122, 0.25),
-      0 2px 0 rgba(0,0,0,0.5);
-  }
+  .cd-cell:last-child { border-right: none; }
 
-  .digit-label {
+  .cd-cell .cd-label {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-top: 8px;
+    color: var(--bone-dim);
+  }
+
+  .cd-cell .cd-value {
+    font-family: var(--display);
+    font-size: clamp(64px, 12vw, 140px);
+    line-height: 0.9;
+    color: var(--liberty);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
   }
 
   .draw-time-note {
-    margin-top: 22px;
+    margin-top: 28px;
     font-family: var(--mono);
     font-size: 12px;
-    color: var(--ink-dim);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    color: var(--bone-dim);
+    text-transform: uppercase;
   }
 
-  /* ---------- DRAFT STAGE ---------- */
+  /* =============== DRAFT STAGE =============== */
 
   .draft-stage {
     display: none;
-    margin: 30px 0;
   }
 
   .draft-stage.active { display: block; }
 
-  .stage-header {
+  .stage-meta {
+    padding: 32px 28px 0;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 10px;
-    margin-bottom: 22px;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
   }
 
-  .round-badge {
+  .stage-meta .round-info {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .round-number {
     font-family: var(--display);
-    font-size: clamp(22px, 4.5vw, 32px);
-    color: var(--ink);
-    line-height: 1;
+    font-size: clamp(40px, 7vw, 64px);
+    line-height: 0.9;
+    color: var(--bone);
   }
 
-  .round-badge small {
-    display: block;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    color: var(--gold);
-    font-weight: normal;
-    margin-bottom: 5px;
-    text-transform: uppercase;
+  .round-number .of {
+    color: var(--bone-dim);
+    font-size: 0.5em;
+    margin-left: 4px;
   }
 
-  .pot-badge {
+  .pot-tag {
     font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--ink-dim);
-    border: 1px solid var(--line);
-    padding: 6px 12px;
-    border-radius: 2px;
+    color: var(--liberty);
+    border-left: 1px solid var(--line-strong);
+    padding-left: 18px;
   }
 
-  /* The reveal stage */
+  .pick-counter {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    border: 1px solid var(--line-strong);
+    padding: 8px 14px;
+  }
 
-  .reveal-arena {
-    background: linear-gradient(180deg, #142648 0%, #0c1c38 100%);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 30px 22px;
+  /* The arena */
+
+  .arena {
+    margin: 32px 28px;
+    background: linear-gradient(180deg, var(--liberty-ink) 0%, var(--black) 100%);
+    border: 1px solid var(--liberty-deep);
     position: relative;
     overflow: hidden;
-    text-align: center;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.05),
-      0 24px 60px -20px rgba(0,0,0,0.5);
   }
 
-  .reveal-arena::before {
+  /* Big green corner brackets */
+  .arena::before,
+  .arena::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center top, rgba(232,196,104,0.10) 0%, transparent 60%);
-    pointer-events: none;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--liberty-bright);
+  }
+  .arena::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .arena::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+  .arena-inner {
+    padding: 40px 24px 36px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .on-the-clock-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--liberty-bright);
+    margin-bottom: 10px;
   }
 
   .picker-name {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.28em;
+    font-family: var(--display);
+    font-size: clamp(56px, 11vw, 120px);
+    line-height: 0.88;
+    color: var(--bone);
+    letter-spacing: -0.01em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
+    margin: 0;
   }
 
-  .picker-name strong {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 28px;
-    display: block;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    margin-top: 6px;
+  .picker-name .underline {
+    background: linear-gradient(180deg, transparent 78%, var(--liberty) 78%, var(--liberty) 92%, transparent 92%);
+    padding: 0 4px;
   }
 
   .reveal-window {
-    margin: 24px 0 18px;
-    height: 130px;
+    margin: 36px 0 28px;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    perspective: 800px;
   }
 
   .team-card {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 10px 24px;
-    min-width: 220px;
+    gap: 16px;
+    padding: 8px 32px;
+    min-width: 280px;
     position: relative;
   }
 
   .team-flag {
-    font-size: 56px;
+    font-size: 88px;
     line-height: 1;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
     transition: transform 0.2s;
   }
 
   .team-name {
     font-family: var(--display);
-    font-size: 26px;
+    font-size: clamp(36px, 6vw, 56px);
     letter-spacing: -0.01em;
-    color: var(--ink);
+    color: var(--bone);
     line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .team-card.locked {
-    animation: lockIn 0.6s ease-out;
+    animation: lockIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .team-card.locked .team-flag {
@@ -354,32 +525,40 @@
   }
 
   @keyframes lockIn {
-    0% { transform: scale(0.9); opacity: 0.5; }
-    50% { transform: scale(1.18); }
+    0% { transform: scale(0.85); opacity: 0.4; }
+    60% { transform: scale(1.15); }
     100% { transform: scale(1); opacity: 1; }
   }
 
   .draw-button {
     appearance: none;
-    border: 1px solid var(--gold);
-    background: var(--gold);
-    color: var(--bg-0);
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.24em;
+    border: none;
+    background: var(--liberty);
+    color: var(--black);
+    font-family: var(--display);
+    font-size: 20px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 14px 32px;
-    border-radius: 2px;
+    padding: 18px 38px;
+    border-radius: 0;
     cursor: pointer;
-    font-weight: 500;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-    box-shadow: 0 6px 20px -8px rgba(232,196,104,0.6);
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .draw-button::after {
+    content: "→";
+    margin-left: 14px;
+    display: inline-block;
+    transition: transform 0.15s;
   }
 
   .draw-button:hover:not(:disabled) {
-    background: var(--gold-bright);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px -8px rgba(255,217,122,0.7);
+    background: var(--liberty-bright);
+    transform: translateY(-2px);
+  }
+  .draw-button:hover:not(:disabled)::after {
+    transform: translateX(4px);
   }
 
   .draw-button:active:not(:disabled) { transform: translateY(0); }
@@ -390,95 +569,410 @@
   }
 
   .draw-status {
-    margin-top: 16px;
+    margin-top: 18px;
     font-family: var(--mono);
     font-size: 12px;
     letter-spacing: 0.1em;
-    color: var(--ink-dim);
+    color: var(--liberty-bright);
     min-height: 16px;
   }
 
-  /* spinning carousel during reveal */
-  .spinning .team-card {
-    animation: spinFlash 0.08s linear;
-  }
+  /* =============== PICK ORDER STRIP =============== */
 
-  @keyframes spinFlash {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
+  .pick-order-wrap {
+    padding: 0 28px 40px;
   }
-
-  /* ---------- PICK ORDER & PROGRESS ---------- */
 
   .pick-order {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 6px;
-    margin: 26px 0 0;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
   }
 
   .pick-chip {
-    border: 1px solid var(--line);
-    padding: 8px 6px;
+    padding: 18px 8px;
     text-align: center;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.02);
+    border-right: 1px solid var(--line);
     transition: all 0.3s;
     position: relative;
   }
 
+  .pick-chip:last-child { border-right: none; }
+
   .pick-chip .chip-num {
     font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: 0.18em;
-    color: var(--ink-dim);
+    letter-spacing: 0.2em;
+    color: var(--bone-dim);
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 
   .pick-chip .chip-name {
     font-family: var(--display);
-    font-size: 13px;
-    color: var(--ink);
-    letter-spacing: -0.01em;
+    font-size: 22px;
+    color: var(--bone);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    line-height: 1;
   }
 
   .pick-chip.current {
-    border-color: var(--gold);
-    background: rgba(232,196,104,0.12);
-    box-shadow: 0 0 0 1px var(--gold), 0 0 20px -5px rgba(232,196,104,0.5);
+    background: var(--liberty);
   }
+  .pick-chip.current .chip-num { color: rgba(0,0,0,0.6); }
+  .pick-chip.current .chip-name { color: var(--black); }
 
   .pick-chip.done {
-    opacity: 0.45;
+    opacity: 0.35;
   }
 
   .pick-chip.done .chip-name {
     text-decoration: line-through;
-    text-decoration-color: var(--gold);
+    text-decoration-color: var(--liberty);
+    text-decoration-thickness: 2px;
   }
 
-  /* ---------- RESULTS BOARD ---------- */
+  /* =============== COMMENTARY =============== */
+
+  .commentary {
+    margin-top: 10px;
+    font-family: var(--body);
+    font-style: italic;
+    font-size: clamp(14px, 1.7vw, 17px);
+    color: var(--bone);
+    min-height: 22px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+
+  .commentary.visible { opacity: 0.95; }
+
+  /* =============== LIVE FEED + STRENGTH METER =============== */
+
+  .insights-wrap {
+    padding: 0 28px 40px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    margin: 0 28px 40px;
+  }
+
+  .insights-col {
+    padding: 24px 22px;
+    border-right: 1px solid var(--line-strong);
+    min-height: 360px;
+  }
+
+  .insights-col:last-child {
+    border-right: none;
+  }
+
+  .insights-col h5 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--liberty);
+    margin: 0 0 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .insights-col h5::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--liberty);
+    transform: rotate(45deg);
+    display: inline-block;
+  }
+
+  /* live feed */
+  .feed-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 360px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0;
+  }
+
+  .feed-list::-webkit-scrollbar { width: 4px; }
+  .feed-list::-webkit-scrollbar-thumb { background: var(--liberty-deep); }
+  .feed-list::-webkit-scrollbar-track { background: transparent; }
+
+  .feed-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: feedSlide 0.4s ease-out forwards;
+  }
+
+  @keyframes feedSlide {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .feed-item:last-child { border-bottom: none; }
+
+  .feed-item .feed-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--bone-dim);
+    min-width: 28px;
+    flex-shrink: 0;
+  }
+
+  .feed-item .feed-flag {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .feed-item .feed-text {
+    font-family: var(--body);
+    font-size: 14px;
+    color: var(--bone);
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .feed-item .feed-text .picker {
+    font-family: var(--display);
+    text-transform: uppercase;
+    font-size: 16px;
+    color: var(--liberty);
+    letter-spacing: 0;
+  }
+
+  .feed-item .feed-pot {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--bone-dim);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .feed-empty {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--bone-dim);
+    padding: 30px 0;
+    text-align: center;
+  }
+
+  /* strength meter */
+  .strength-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .strength-row {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .strength-row .rank {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--bone-dim);
+    text-align: right;
+  }
+
+  .strength-row.top .rank { color: var(--gold); font-weight: 700; }
+
+  .strength-row .bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .strength-row .bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .strength-row .bar-name {
+    font-family: var(--display);
+    font-size: 15px;
+    color: var(--bone);
+    text-transform: uppercase;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .strength-row.top .bar-name { color: var(--liberty-bright); }
+
+  .strength-row .bar-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--bone-dim);
+    letter-spacing: 0.14em;
+  }
+
+  .strength-row .bar-track {
+    height: 6px;
+    background: rgba(243, 239, 230, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .strength-row .bar-fill {
+    height: 100%;
+    background: var(--liberty);
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .strength-row.top .bar-fill {
+    background: linear-gradient(90deg, var(--liberty), var(--gold));
+  }
+
+  .strength-row .score {
+    font-family: var(--display);
+    font-size: 22px;
+    color: var(--bone);
+    line-height: 1;
+  }
+
+  .strength-row.top .score { color: var(--gold); }
+
+  /* =============== COMPLETE BANNER =============== */
+
+  .complete-banner {
+    display: none;
+    padding: 60px 28px;
+    background: var(--liberty);
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+    border-top: 2px solid var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .complete-banner.active { display: block; animation: bannerIn 0.8s ease-out; }
+
+  @keyframes bannerIn {
+    0% { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .complete-banner .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .complete-banner h2 {
+    font-family: var(--display);
+    font-size: clamp(52px, 11vw, 140px);
+    line-height: 0.88;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .complete-banner p {
+    font-family: var(--body);
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: rgba(0,0,0,0.7);
+    margin: 0 0 28px;
+    max-width: 580px;
+    line-height: 1.5;
+  }
+
+  .export-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .export-btn {
+    appearance: none;
+    border: 2px solid var(--black);
+    background: var(--black);
+    color: var(--liberty);
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .export-btn:hover {
+    background: var(--bone);
+    color: var(--black);
+    border-color: var(--bone);
+  }
+
+  .export-btn.secondary {
+    background: transparent;
+    color: var(--black);
+  }
+
+  .export-btn.secondary:hover {
+    background: var(--black);
+    color: var(--liberty);
+  }
+
+  /* =============== RESULTS BOARD =============== */
 
   .results-board {
-    margin-top: 40px;
+    padding: 0 28px 60px;
+  }
+
+  .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--line-strong);
+    border-left: 1px solid var(--line-strong);
   }
 
   .player-card {
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 18px 18px 16px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+    border-right: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    padding: 24px 22px 22px;
+    background: var(--off-black);
     position: relative;
+    transition: background 0.3s;
   }
 
   .player-card.is-current {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 1px var(--gold);
+    background: var(--liberty-ink);
   }
 
   .player-card-header {
@@ -486,25 +980,27 @@
     justify-content: space-between;
     align-items: baseline;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 10px;
-    margin-bottom: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .player-card h3 {
     font-family: var(--display);
-    font-weight: 400;
-    font-size: 24px;
+    font-size: 32px;
     margin: 0;
     letter-spacing: -0.01em;
-    color: var(--ink);
+    color: var(--bone);
+    text-transform: uppercase;
+    line-height: 0.95;
   }
 
   .player-card .team-count {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: var(--ink-dim);
+    color: var(--liberty);
     text-transform: uppercase;
+    font-weight: 700;
   }
 
   .player-teams {
@@ -513,210 +1009,353 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .player-teams li {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: var(--serif);
-    font-size: 16px;
-    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--bone);
     opacity: 0;
     transform: translateX(-4px);
     animation: slideIn 0.4s ease-out forwards;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--line);
   }
 
+  .player-teams li:last-child { border-bottom: none; }
+
   .player-teams li .flag {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
     flex-shrink: 0;
   }
 
-  .player-teams li .pot-tag {
+  .player-teams li .team-text {
+    flex: 1;
+  }
+
+  .player-teams li .pot-mark {
     margin-left: auto;
     font-family: var(--mono);
     font-size: 9px;
     letter-spacing: 0.18em;
-    color: var(--ink-dim);
+    color: var(--liberty);
     text-transform: uppercase;
+    background: var(--liberty-ink);
+    padding: 3px 7px;
+    border: 1px solid var(--liberty-deep);
   }
 
   @keyframes slideIn {
     to { opacity: 1; transform: translateX(0); }
   }
 
-  /* ---------- COMPLETE BANNER ---------- */
+  /* =============== METHOD STRIP =============== */
 
-  .complete-banner {
-    display: none;
-    text-align: center;
-    margin: 40px 0;
-    padding: 36px 24px;
-    border: 1px solid var(--gold);
-    border-radius: 4px;
-    background: linear-gradient(180deg, rgba(232,196,104,0.10), rgba(232,196,104,0.02));
+  .method-strip {
+    padding: 70px 28px;
+    background: var(--off-black);
+    border-bottom: 1px solid var(--line);
   }
 
-  .complete-banner.active { display: block; animation: bannerIn 0.8s ease-out; }
-
-  @keyframes bannerIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  .complete-banner .kicker { color: var(--gold-bright); }
-  .complete-banner h2 {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(28px, 6vw, 44px);
-    margin: 4px 0 8px;
-    color: var(--ink);
-  }
-  .complete-banner p {
-    font-family: var(--serif);
-    font-style: italic;
-    color: var(--ink-dim);
-    margin: 0;
-  }
-
-  /* ---------- INFO STRIP ---------- */
-
-  .info-strip {
-    margin-top: 50px;
-    padding-top: 28px;
-    border-top: 1px solid var(--line);
+  .method-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0;
   }
 
-  .info-block h4 {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.28em;
+  .method-cell {
+    padding: 28px 24px;
+    border-right: 1px solid var(--line-strong);
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .method-cell:first-child { border-left: 1px solid var(--line-strong); }
+  .method-cell:last-child { border-right: 1px solid var(--line-strong); }
+
+  .method-cell h4 {
+    font-family: var(--display);
+    font-size: 22px;
+    margin: 0 0 12px;
     text-transform: uppercase;
-    color: var(--gold);
-    margin: 0 0 8px;
-    font-weight: 500;
+    color: var(--liberty);
+    letter-spacing: 0;
+    line-height: 1;
   }
 
-  .info-block p {
+  .method-cell p {
     margin: 0;
-    font-family: var(--serif);
+    font-family: var(--body);
     font-size: 14px;
     line-height: 1.55;
-    color: var(--ink-dim);
+    color: var(--bone-dim);
   }
 
+  /* =============== FOOTER =============== */
+
   footer {
+    padding: 50px 28px 30px;
     text-align: center;
-    margin-top: 60px;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-mark {
+    font-family: var(--display);
+    font-size: clamp(48px, 12vw, 140px);
+    line-height: 0.9;
+    color: var(--bone);
+    margin: 0 0 24px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .footer-mark .green { color: var(--liberty); }
+
+  .footer-line {
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--ink-dim);
-    opacity: 0.6;
+    color: var(--bone-dim);
   }
 
-  /* utility */
+  /* =============== UTILITIES =============== */
+
   .hidden { display: none !important; }
 
-  @media (max-width: 600px) {
-    main { padding: 20px 16px 60px; }
-    .countdown-digits { gap: 8px; }
-    .digit-block { min-width: 58px; }
-    .team-card { min-width: 180px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001s !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.001s !important;
+    }
+    .ticker-track { animation: none; padding-left: 0; }
+    .live-dot { animation: none; }
+  }
+
+  /* spinning carousel during reveal */
+  .reveal-window.spinning .team-card {
+    animation: spinFlash 0.08s linear;
+  }
+  @keyframes spinFlash {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  /* =============== MOBILE =============== */
+
+  @media (max-width: 720px) {
+    body::before { display: none; }
+    .topbar { padding: 12px 16px; }
+    .hero { padding: 50px 16px 36px; }
+    .section, .countdown-stage, .method-strip { padding-left: 16px; padding-right: 16px; }
+    .stage-meta { padding-left: 16px; padding-right: 16px; }
+    .arena { margin-left: 16px; margin-right: 16px; }
+    .insights-wrap { margin-left: 16px; margin-right: 16px; grid-template-columns: 1fr; padding: 0 16px 30px; }
+    .insights-col { border-right: none; border-bottom: 1px solid var(--line-strong); min-height: auto; }
+    .insights-col:last-child { border-bottom: none; }
+    .pick-order-wrap { padding-left: 16px; padding-right: 16px; }
+    .results-board { padding-left: 16px; padding-right: 16px; }
+    .complete-banner { padding-left: 16px; padding-right: 16px; }
+    .countdown-grid { grid-template-columns: 1fr; }
+    .cd-cell { min-height: 110px; border-right: none; border-bottom: 1px solid var(--line-strong); padding: 18px 16px; flex-direction: row; align-items: center; justify-content: space-between; }
+    .cd-cell:last-child { border-bottom: none; }
     .pick-order { grid-template-columns: repeat(4, 1fr); }
-    .stage-header { flex-direction: column; align-items: flex-start; }
+    .pick-chip:nth-child(4) { border-right: none; }
+    .pick-chip:nth-child(-n+4) { border-bottom: 1px solid var(--line); }
+    .hero-stats { gap: 20px; }
+    .stat { text-align: left; }
+    .team-card { min-width: 0; padding: 8px 16px; }
   }
 </style>
 </head>
 <body>
+
+<!-- TOP MARQUEE -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>WE ARE EIGHT</span><span class="star">★</span>
+    <span>WE ARE FORTY-EIGHT</span><span class="star">★</span>
+    <span>WE ARE 26</span><span class="star">★</span>
+    <span>SWEEPSTAKE LIVE FROM THE LADS' LOUNGE</span><span class="star">★</span>
+    <span>WE ARE EIGHT</span><span class="star">★</span>
+    <span>WE ARE FORTY-EIGHT</span><span class="star">★</span>
+    <span>WE ARE 26</span><span class="star">★</span>
+    <span>SWEEPSTAKE LIVE FROM THE LADS' LOUNGE</span><span class="star">★</span>
+  </div>
+</div>
+
 <main>
-  <header class="masthead">
-    <div class="kicker"><span class="dot"></span>Live · The Lads' Lounge Broadcast</div>
-    <h1 class="title">The Draw<span class="ampersand">&amp;</span>Quartering</h1>
-    <p class="subtitle">A sweepstake draw for the 2026 FIFA World Cup. Eight gentlemen. Six teams apiece. One trophy worth pretending we care about.</p>
-  </header>
 
-  <!-- COUNTDOWN PHASE -->
-  <section class="countdown-stage" id="countdown-stage">
-    <div class="countdown-label">Draw commences in</div>
-    <div class="countdown-digits">
-      <div class="digit-block">
-        <div class="digit" id="cd-h">00</div>
-        <div class="digit-label">Hours</div>
-      </div>
-      <div class="digit-block">
-        <div class="digit" id="cd-m">00</div>
-        <div class="digit-label">Minutes</div>
-      </div>
-      <div class="digit-block">
-        <div class="digit" id="cd-s">00</div>
-        <div class="digit-label">Seconds</div>
-      </div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="live-dot"></span>
+      <span>Live · Broadcast 26</span>
     </div>
-    <div class="draw-time-note" id="draw-time-note">Draw begins at 16:00 BST</div>
-  </section>
+    <button class="icon-btn" id="sound-toggle" aria-label="Toggle sound">
+      <span id="sound-icon">🔊</span>
+      <span id="sound-label">Sound</span>
+    </button>
+  </div>
 
-  <!-- DRAFT PHASE -->
-  <section class="draft-stage" id="draft-stage">
-    <div class="stage-header">
-      <div class="round-badge">
-        <small id="round-label">Round 1 of 6</small>
-        <span id="pot-label">Pot 1 · The Seeded Twelve</span>
-      </div>
-      <div class="pot-badge" id="pick-counter">Pick 1 of 48</div>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-meta">
+      <div class="tag">★ The Sweepstake · MMXXVI</div>
+      <div class="number">№ 01 / Live Draw</div>
     </div>
 
-    <div class="reveal-arena">
-      <div class="picker-name">
-        On the clock
-        <strong id="current-picker">—</strong>
-      </div>
-      <div class="reveal-window" id="reveal-window">
-        <div class="team-card" id="team-card">
-          <div class="team-flag" id="team-flag">🏆</div>
-          <div class="team-name" id="team-name">Ready</div>
+    <h1 class="hero-title">
+      We Are<br /><span class="green">Eight.</span>
+    </h1>
+
+    <div class="hero-tagline">
+      <p class="hero-blurb">
+        Eight gentlemen. Forty-eight teams. <strong>Six picks each.</strong>
+        A FIFA-seeded snake draft, run live at four o'clock, on the day the
+        beautiful game came home to the lads' lounge.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">48</div>
+          <div class="stat-label">Teams</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Players</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Picks each</div>
         </div>
       </div>
-      <button class="draw-button" id="draw-button">Make the Pick</button>
-      <div class="draw-status" id="draw-status">Press to draw the next team</div>
+    </div>
+  </header>
+
+  <!-- COUNTDOWN -->
+  <section class="countdown-stage" id="countdown-stage">
+    <div class="section-label">Until Kickoff</div>
+    <div class="countdown-grid">
+      <div class="cd-cell">
+        <div class="cd-label">Hours</div>
+        <div class="cd-value" id="cd-h">00</div>
+      </div>
+      <div class="cd-cell">
+        <div class="cd-label">Minutes</div>
+        <div class="cd-value" id="cd-m">00</div>
+      </div>
+      <div class="cd-cell">
+        <div class="cd-label">Seconds</div>
+        <div class="cd-value" id="cd-s">00</div>
+      </div>
+    </div>
+    <div class="draw-time-note" id="draw-time-note">Draw begins at 16:00 UK</div>
+  </section>
+
+  <!-- DRAFT STAGE -->
+  <section class="draft-stage" id="draft-stage">
+    <div class="stage-meta">
+      <div class="round-info">
+        <div class="round-number" id="round-number">Round 1<span class="of"> / 6</span></div>
+        <div class="pot-tag" id="pot-label">Pot 1 — The Seeded Twelve</div>
+      </div>
+      <div class="pick-counter" id="pick-counter">Pick 1 / 48</div>
     </div>
 
-    <div class="pick-order" id="pick-order"></div>
+    <div class="arena">
+      <div class="arena-inner">
+        <div class="on-the-clock-label">★ On the Clock ★</div>
+        <h2 class="picker-name" id="current-picker"><span class="underline">—</span></h2>
+
+        <div class="reveal-window" id="reveal-window">
+          <div class="team-card" id="team-card">
+            <div class="team-flag" id="team-flag">🏆</div>
+            <div class="team-name" id="team-name">Ready</div>
+          </div>
+        </div>
+
+        <button class="draw-button" id="draw-button">Make the Pick</button>
+        <div class="draw-status" id="draw-status">Press to draw the next team</div>
+        <div class="commentary" id="commentary"></div>
+      </div>
+    </div>
+
+    <div class="insights-wrap">
+      <div class="insights-col">
+        <h5>Live Feed</h5>
+        <ul class="feed-list" id="feed-list">
+          <li class="feed-empty">Picks will appear here as the draw unfolds.</li>
+        </ul>
+      </div>
+      <div class="insights-col">
+        <h5>Squad Power Rankings</h5>
+        <ul class="strength-list" id="strength-list"></ul>
+      </div>
+    </div>
+
+    <div class="pick-order-wrap">
+      <div class="section-label">Pick Order — Snake Draft</div>
+      <div class="pick-order" id="pick-order"></div>
+    </div>
   </section>
 
   <!-- COMPLETE BANNER -->
   <section class="complete-banner" id="complete-banner">
-    <div class="kicker">Draw complete</div>
-    <h2>The fates are sealed</h2>
-    <p>Forty-eight teams. Eight portfolios. May the best ball-watcher win.</p>
-  </section>
-
-  <!-- RESULTS BOARD (always rendered, populates as draw progresses) -->
-  <section class="results-board" id="results-board"></section>
-
-  <!-- INFO -->
-  <section class="info-strip">
-    <div class="info-block">
-      <h4>The method</h4>
-      <p>Four FIFA-seeded pots of twelve. Snake draft across six rounds — order randomised once, then 1→8, 8→1, 1→8 and so on. Everyone leaves with a balanced spread of giants, scrappers, and dark horses.</p>
-    </div>
-    <div class="info-block">
-      <h4>Why it's fair</h4>
-      <p>No-one ends up with four no-hopers. No-one hoards the favourites. The snake means going first isn't a permanent advantage — pick last in Pot 1, pick first in Pot 2.</p>
-    </div>
-    <div class="info-block">
-      <h4>The reveal</h4>
-      <p>Each pick spins through the remaining pot and locks on one. The result is deterministic — anyone watching this page sees exactly the same draw.</p>
+    <div class="kicker">★ The Fates Are Sealed ★</div>
+    <h2>We Are<br />Done.</h2>
+    <p>
+      Forty-eight teams have found their homes. Eight portfolios, one trophy
+      we'll all pretend we predicted. Save it, share it, debate it in the
+      group chat until kickoff.
+    </p>
+    <div class="export-bar">
+      <button class="export-btn" id="export-png">📸 Download PNG</button>
+      <button class="export-btn secondary" id="copy-results">📋 Copy as Text</button>
+      <button class="export-btn secondary" id="replay-btn">↻ Replay Draw</button>
     </div>
   </section>
 
-  <footer>The Sweepstake · MMXXVI</footer>
+  <!-- RESULTS BOARD -->
+  <section class="results-board" id="results-board-wrap">
+    <div class="section-label" style="margin-left: 0;">The Portfolios</div>
+    <div class="results-grid" id="results-board"></div>
+  </section>
+
+  <!-- METHOD STRIP -->
+  <section class="method-strip">
+    <div class="section-label">★ Method ★</div>
+    <div class="method-grid">
+      <div class="method-cell">
+        <h4>Four Pots</h4>
+        <p>The official FIFA seeding. Twelve teams in each, ranked top to bottom. Pot 1 is your Spains and Brazils; Pot 4 is your Curaçaos and your Iraqs.</p>
+      </div>
+      <div class="method-cell">
+        <h4>Snake Draft</h4>
+        <p>Order randomised once, then alternates direction each round. 1 → 8, 8 → 1, 1 → 8. Going first isn't a permanent advantage.</p>
+      </div>
+      <div class="method-cell">
+        <h4>Six Rounds</h4>
+        <p>Pots drawn through in order. Every player walks away with one or two teams from every pot. No empires, no graveyards.</p>
+      </div>
+      <div class="method-cell">
+        <h4>Seeded Random</h4>
+        <p>The result is locked from the draw timestamp. Anyone watching this URL sees identical picks. The drama is in the reveal, not the maths.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <h2 class="footer-mark">We Are <span class="green">26</span></h2>
+    <div class="footer-line">★ The Sweepstake · MMXXVI · Live from The Lads' Lounge ★</div>
+  </footer>
+
 </main>
 
 <script>
@@ -789,41 +1428,207 @@
   };
 
   const POT_LABELS = {
-    1: "Pot 1 · The Seeded Twelve",
-    2: "Pot 2 · The Contenders",
-    3: "Pot 3 · The Dark Horses",
-    4: "Pot 4 · The Wild Cards",
+    1: "Pot 1 — The Seeded Twelve",
+    2: "Pot 2 — The Contenders",
+    3: "Pot 3 — The Dark Horses",
+    4: "Pot 4 — The Wild Cards",
   };
+
+  // Squad strength scoring. Higher pot = stronger team. We give a bonus
+  // to top-tier Pot 1 sides since not all "Pot 1" teams are equal — Spain
+  // is a stronger pick than Canada — but kept simple: index within pot
+  // gives a small tiebreaker.
+  const POT_BASE_SCORE = { 1: 10, 2: 6, 3: 3, 4: 1 };
+
+  function teamStrength(team, pot) {
+    const base = POT_BASE_SCORE[pot];
+    const idx = POTS[pot].findIndex(t => t.name === team.name);
+    // Earlier in the pot list = stronger (the pots were ordered by FIFA rank).
+    // Small bonus, max ~2 points, decreasing.
+    const positionBonus = Math.max(0, (12 - idx) / 12) * 2;
+    return Math.round((base + positionBonus) * 10) / 10;
+  }
+
+  // Commentary templates, chosen deterministically by global pick index.
+  // Categorised by pot so the line matches the picked team's tier.
+  const COMMENTARY = {
+    1: [
+      "{p} lands one of the tournament favourites.",
+      "{p} grabs a heavyweight. The neutrals nod approvingly.",
+      "Surely a knockout-stage shoo-in for {p}.",
+      "{p} doesn't even pretend not to fancy that one.",
+      "A statement pick from {p}. The room goes quiet.",
+    ],
+    2: [
+      "{p} picks up a side with real bite.",
+      "A handy second pot pick for {p} — that team's got legs.",
+      "Solid as a rock, says {p}. Probably.",
+      "{p} grabs a sneaky semis contender.",
+      "Not flashy. Not weak. Exactly what {p} needed.",
+    ],
+    3: [
+      "{p} takes a punt. Could go either way.",
+      "A wild card lands with {p}.",
+      "{p} bets on the underdog. Bold.",
+      "Group-stage hopeful for {p} — but you never know.",
+      "{p} adds a piece nobody else wanted to predict.",
+    ],
+    4: [
+      "{p} draws a dark horse from the wild card pot.",
+      "{p}'s portfolio takes a chaotic turn.",
+      "Stranger things have happened. {p} clings to that hope.",
+      "{p}: 'I meant to draw that team.' Sure.",
+      "A heart-in-mouth pick for {p}. Pray for goals.",
+    ],
+  };
+
+  function pickedCommentary(pick) {
+    const lines = COMMENTARY[pick.pot];
+    // Deterministic per global pick: mulberry on globalPick + DRAW_TS
+    const r = mulberry32(DRAW_TS + pick.globalPick * 7919);
+    const idx = Math.floor(r() * lines.length);
+    return lines[idx].replace("{p}", pick.picker);
+  }
+
+  // =====================================================================
+  // MOTION PREFERENCE
+  // =====================================================================
+  const REDUCED_MOTION = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // =====================================================================
+  // SOUND (Web Audio — no asset files)
+  // =====================================================================
+
+  const Sound = (() => {
+    let ctx = null;
+    let muted = false;
+
+    try {
+      const stored = window.localStorage.getItem("sweepstake-muted");
+      if (stored === "1") muted = true;
+    } catch(e) {}
+
+    function ensureCtx() {
+      if (ctx) return ctx;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+      return ctx;
+    }
+
+    function tone(freq, dur, type = "sine", gain = 0.15, when = 0) {
+      if (muted) return;
+      const ac = ensureCtx();
+      if (!ac) return;
+      const t0 = ac.currentTime + when;
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t0);
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(gain, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      osc.connect(g).connect(ac.destination);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.05);
+    }
+
+    function noise(dur, gain = 0.08, when = 0) {
+      if (muted) return;
+      const ac = ensureCtx();
+      if (!ac) return;
+      const t0 = ac.currentTime + when;
+      const buf = ac.createBuffer(1, ac.sampleRate * dur, ac.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1);
+      const src = ac.createBufferSource();
+      const g = ac.createGain();
+      const filt = ac.createBiquadFilter();
+      filt.type = "lowpass";
+      filt.frequency.value = 800;
+      src.buffer = buf;
+      g.gain.setValueAtTime(gain, t0);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      src.connect(filt).connect(g).connect(ac.destination);
+      src.start(t0);
+    }
+
+    return {
+      isMuted: () => muted,
+      toggle() {
+        muted = !muted;
+        try { window.localStorage.setItem("sweepstake-muted", muted ? "1" : "0"); } catch(e) {}
+        return muted;
+      },
+      unlock() {
+        const ac = ensureCtx();
+        if (ac && ac.state === "suspended") ac.resume();
+      },
+      tick() { tone(440, 0.04, "square", 0.05); },
+      drumroll(duration = 0.5) {
+        if (muted) return;
+        const steps = Math.floor(duration / 0.04);
+        for (let i = 0; i < steps; i++) {
+          noise(0.03, 0.05, i * 0.04);
+        }
+      },
+      stinger() {
+        tone(523.25, 0.4, "triangle", 0.12, 0);
+        tone(659.25, 0.4, "triangle", 0.10, 0.05);
+        tone(783.99, 0.5, "triangle", 0.10, 0.1);
+        tone(1046.5, 0.6, "triangle", 0.12, 0.18);
+      },
+      fanfare() {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+        notes.forEach((f, i) => {
+          tone(f, 0.5, "triangle", 0.12, i * 0.12);
+        });
+        noise(1.5, 0.04, 0.4);
+      },
+    };
+  })();
+
+  // =====================================================================
+  // CONFETTI
+  // =====================================================================
+  function fireConfetti(intensity = "small") {
+    if (REDUCED_MOTION) return;
+    if (typeof confetti !== "function") return;
+    // NYNJ palette confetti
+    const palette = ["#4FB8A8", "#6FD4C2", "#F4C842", "#E63946", "#f3efe6"];
+    if (intensity === "small") {
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: palette,
+      });
+    } else {
+      const dur = 2500;
+      const end = Date.now() + dur;
+      (function frame() {
+        confetti({ particleCount: 4, angle: 60, spread: 70, origin: { x: 0 }, colors: palette });
+        confetti({ particleCount: 4, angle: 120, spread: 70, origin: { x: 1 }, colors: palette });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+  }
 
   // =====================================================================
   // DRAW CONFIG
   // =====================================================================
 
-  // Target: today at 16:00 Europe/London. We compute it in UTC.
-  // For BST (currently in effect on May 22, 2026 — UK is in BST from late
-  // March until late October), 16:00 BST == 15:00 UTC.
-  // We'll detect today's date and lock the target to that date at 15:00 UTC.
-  const TARGET_LOCAL_HOUR_BST = 16; // 4 PM UK time
   function getDrawTimestamp() {
-    // Use UTC date components. On 22 May 2026, BST is in effect so 16:00 BST = 15:00 UTC.
-    // We construct the target at 15:00 UTC for today.
+    // 16:00 BST == 15:00 UTC. Today.
     const now = new Date();
-    const target = new Date(Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      15, 0, 0, 0
-    ));
-    return target.getTime();
+    return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 15, 0, 0, 0);
   }
   const DRAW_TS = getDrawTimestamp();
 
   // =====================================================================
   // DETERMINISTIC RANDOMNESS
   // =====================================================================
-  // Seeded so every viewer sees the exact same draw. Seed = the draw
-  // timestamp, so it's stable across all clients regardless of when they
-  // load the page (as long as they load it for the same day's draw).
 
   function mulberry32(seed) {
     return function() {
@@ -844,72 +1649,25 @@
     return out;
   }
 
-  // Build the full deterministic draw plan.
   function buildDrawPlan() {
     const rng = mulberry32(DRAW_TS);
-
-    // 1. Randomise pick order once.
     const pickOrder = seededShuffle(PLAYERS, rng);
-
-    // 2. For each pot, generate a shuffled sequence of teams. Draws across
-    //    pots are independent so the spectacle still has surprise.
     const potOrders = {};
     for (const p of [1, 2, 3, 4]) {
       potOrders[p] = seededShuffle(POTS[p], rng);
     }
-
-    // 3. Construct snake schedule. 6 rounds total. Rounds 1-3 use pots 1-3
-    //    once each (snake by round). Then rounds 4-6 use pots 2-4 again
-    //    (wait — we need 6 teams per person, 4 pots × 12 teams = 48 total).
-    //    8 players × 6 picks = 48. So each player gets 6 picks.
-    //    Pots have 12 teams each = 1.5 teams per player. That doesn't
-    //    cleanly divide. So we use the snake across a single 6×8 grid,
-    //    and for each pick we draw from the *current* pot (cycling pots
-    //    every 8 picks). 6 rounds × 8 picks = 48. Pots cycle: rounds 1-2
-    //    pot 1+2, rounds 3-4 pot 2+3... no. Cleaner:
-    //
-    //    Simplest fair version: 4 "phases" (one per pot), each phase
-    //    contains all 8 players picking once with snake direction
-    //    alternating. That's 32 picks → 4 teams each. We need 6 teams.
-    //
-    //    Right approach: do snake order across 6 rounds. Each round
-    //    everyone picks once. For pot allocation: rounds 1,3,5 pull from
-    //    pots 1,3,(2 again) ... Actually we want EVERY player to get a
-    //    balanced spread. Best solution: each player must end up with
-    //    1 or 2 teams from each pot. With 12 teams in each pot and 8
-    //    players, that's 12/8 = 1.5 teams per pot per player. So 4
-    //    players get 2 from pot 1 and 4 get 1; same for each pot. Across
-    //    all 4 pots that averages to 6 per player. ✓
-    //
-    //    Final scheme: 6 rounds. Each round draws from one pot.
-    //      R1: Pot 1 (8 picks, 4 left in pot 1)
-    //      R2: Pot 1 leftovers (4) + Pot 2 (4) — 8 picks
-    //      R3: Pot 2 (remaining 8) — 8 picks
-    //      R4: Pot 3 (8 picks, 4 left)
-    //      R5: Pot 3 leftovers (4) + Pot 4 (4) — 8 picks
-    //      R6: Pot 4 (remaining 8) — 8 picks
-    //    Snake direction flips every round.
-
-    // Build a flat sequence of picks, each with {pot, team, picker}
-    const picks = [];
     const potQueue = {
       1: potOrders[1].slice(),
       2: potOrders[2].slice(),
       3: potOrders[3].slice(),
       4: potOrders[4].slice(),
     };
-
-    // Helper: pop next team from given pot
     const draw = (pot) => potQueue[pot].shift();
 
-    // Schedule of which pot each of the 48 picks pulls from.
-    // Pots have 12 each → we just go 1×12, 2×12, 3×12, 4×12 sequentially.
     const potSchedule = [];
-    for (const p of [1, 2, 3, 4]) {
-      for (let i = 0; i < 12; i++) potSchedule.push(p);
-    }
+    for (const p of [1, 2, 3, 4]) for (let i = 0; i < 12; i++) potSchedule.push(p);
 
-    // Snake the picker order across 6 rounds.
+    const picks = [];
     for (let round = 0; round < 6; round++) {
       const order = (round % 2 === 0) ? pickOrder : pickOrder.slice().reverse();
       for (let i = 0; i < 8; i++) {
@@ -926,7 +1684,6 @@
         });
       }
     }
-
     return { pickOrder, picks };
   }
 
@@ -939,8 +1696,6 @@
   let currentPickIdx = 0;
   let isRevealing = false;
   let drawStarted = false;
-
-  // Track each player's picks for the results board
   const playerPicks = {};
   PLAYERS.forEach(p => playerPicks[p] = []);
 
@@ -963,9 +1718,12 @@
   const teamNameEl = $("team-name");
   const teamCardEl = $("team-card");
   const revealWindow = $("reveal-window");
-  const roundLabel = $("round-label");
+  const roundNumberEl = $("round-number");
   const potLabel = $("pot-label");
   const pickCounter = $("pick-counter");
+  const commentaryEl = $("commentary");
+  const feedListEl = $("feed-list");
+  const strengthListEl = $("strength-list");
 
   // =====================================================================
   // INIT
@@ -979,7 +1737,7 @@
       timeZone: "Europe/London", hour12: false
     };
     drawTimeNote.textContent =
-      "Draw begins at " + d.toLocaleString("en-GB", opts) + " UK time";
+      "★ Draw begins " + d.toLocaleString("en-GB", opts) + " UK time ★";
   }
   formatDrawTime();
 
@@ -989,7 +1747,7 @@
       const chip = document.createElement("div");
       chip.className = "pick-chip";
       chip.dataset.player = name;
-      chip.innerHTML = `<span class="chip-num">#${i + 1}</span><span class="chip-name">${name}</span>`;
+      chip.innerHTML = `<span class="chip-num">№ ${i + 1}</span><span class="chip-name">${name}</span>`;
       pickOrderEl.appendChild(chip);
     });
   }
@@ -1013,7 +1771,9 @@
 
   function updateCurrentPickerHighlight(player) {
     document.querySelectorAll(".pick-chip").forEach(c => {
-      c.classList.toggle("current", c.dataset.player === player);
+      if (!c.classList.contains("done")) {
+        c.classList.toggle("current", c.dataset.player === player);
+      }
     });
     document.querySelectorAll(".player-card").forEach(c => {
       c.classList.toggle("is-current", c.id === `player-card-${player}`);
@@ -1023,26 +1783,78 @@
   function appendTeamToPlayer(player, team, pot) {
     const ul = document.getElementById(`player-teams-${player}`);
     const li = document.createElement("li");
-    li.style.animationDelay = "0s";
     li.innerHTML = `
       <span class="flag">${team.flag}</span>
       <span class="team-text">${team.name}</span>
-      <span class="pot-tag">P${pot}</span>
+      <span class="pot-mark">P${pot}</span>
     `;
     ul.appendChild(li);
 
     playerPicks[player].push({ team, pot });
     const counter = document.querySelector(`.team-count[data-name="${player}"]`);
     counter.textContent = `${playerPicks[player].length} / 6`;
+
+    addToFeed(player, team, pot);
+    updateStrengthMeter();
+  }
+
+  function addToFeed(player, team, pot) {
+    const empty = feedListEl.querySelector(".feed-empty");
+    if (empty) empty.remove();
+    const li = document.createElement("li");
+    li.className = "feed-item";
+    const pickNum = Object.values(playerPicks).reduce((a, b) => a + b.length, 0);
+    li.innerHTML = `
+      <span class="feed-num">№${pickNum}</span>
+      <span class="feed-flag">${team.flag}</span>
+      <span class="feed-text"><span class="picker">${player}</span> drew ${team.name}</span>
+      <span class="feed-pot">P${pot}</span>
+    `;
+    feedListEl.appendChild(li);
+    while (feedListEl.children.length > 60) {
+      feedListEl.removeChild(feedListEl.firstChild);
+    }
+  }
+
+  function updateStrengthMeter() {
+    // Compute current scores
+    const scores = PLAYERS.map(name => {
+      const total = playerPicks[name].reduce(
+        (sum, p) => sum + teamStrength(p.team, p.pot), 0
+      );
+      return { name, total: Math.round(total * 10) / 10, count: playerPicks[name].length };
+    });
+
+    scores.sort((a, b) => b.total - a.total);
+    const max = Math.max(1, ...scores.map(s => s.total));
+
+    strengthListEl.innerHTML = "";
+    scores.forEach((s, i) => {
+      const li = document.createElement("li");
+      li.className = "strength-row" + (i === 0 && s.total > 0 ? " top" : "");
+      const pct = (s.total / max) * 100;
+      li.innerHTML = `
+        <div class="rank">${String(i + 1).padStart(2, "0")}</div>
+        <div class="bar-wrap">
+          <div class="bar-label">
+            <span class="bar-name">${s.name}</span>
+            <span class="bar-meta">${s.count} pick${s.count === 1 ? "" : "s"}</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width: ${pct}%;"></div></div>
+        </div>
+        <div class="score">${s.total.toFixed(1)}</div>
+      `;
+      strengthListEl.appendChild(li);
+    });
   }
 
   function updateHeader() {
     if (currentPickIdx >= DRAW_PLAN.picks.length) return;
     const pick = DRAW_PLAN.picks[currentPickIdx];
-    roundLabel.textContent = `Round ${pick.round} of 6`;
+    roundNumberEl.innerHTML = `Round ${pick.round}<span class="of"> / 6</span>`;
     potLabel.textContent = POT_LABELS[pick.pot];
-    pickCounter.textContent = `Pick ${pick.globalPick} of 48`;
-    currentPickerEl.textContent = pick.picker;
+    pickCounter.textContent = `Pick ${pick.globalPick} / 48`;
+    currentPickerEl.innerHTML = `<span class="underline">${pick.picker}</span>`;
     updateCurrentPickerHighlight(pick.picker);
   }
 
@@ -1053,7 +1865,6 @@
   function tick() {
     const now = Date.now();
     const diff = DRAW_TS - now;
-
     if (diff <= 0) {
       cdH.textContent = "00";
       cdM.textContent = "00";
@@ -1061,7 +1872,6 @@
       if (!drawStarted) startDraw();
       return;
     }
-
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
@@ -1095,6 +1905,7 @@
     drawStatus.textContent = "Press to draw the next team";
     drawButton.disabled = false;
     drawButton.textContent = "Make the Pick";
+    commentaryEl.classList.remove("visible");
   }
 
   function setRevealFinished() {
@@ -1103,87 +1914,266 @@
     drawButton.textContent = "All picks made";
   }
 
-  // Spin animation: cycle through random teams from the current pot, slow
-  // down, then lock on the actual pick.
   function spinAndReveal(pick) {
     isRevealing = true;
     drawButton.disabled = true;
     drawStatus.textContent = "Drawing…";
 
+    if (REDUCED_MOTION) {
+      teamFlagEl.textContent = pick.team.flag;
+      teamNameEl.textContent = pick.team.name;
+      teamCardEl.classList.add("locked");
+      Sound.stinger();
+      drawStatus.textContent = `${pick.picker} picks ${pick.team.name}`;
+      commentaryEl.textContent = pickedCommentary(pick);
+      commentaryEl.classList.add("visible");
+      appendTeamToPlayer(pick.picker, pick.team, pick.pot);
+      isRevealing = false;
+      currentPickIdx++;
+      advanceAfterPick(pick);
+      return;
+    }
+
     const pot = POTS[pick.pot];
-    // Build a long sequence to flash through. Start fast, slow down.
     const totalSpins = 22;
     const sequence = [];
     for (let i = 0; i < totalSpins - 1; i++) {
       sequence.push(pot[Math.floor(Math.random() * pot.length)]);
     }
-    sequence.push(pick.team); // last frame is the real one
+    sequence.push(pick.team);
 
-    // Easing: spin intervals grow from ~50ms to ~280ms.
     const intervals = [];
+    let totalSpinMs = 0;
     for (let i = 0; i < totalSpins; i++) {
       const t = i / (totalSpins - 1);
       const eased = Math.pow(t, 2.2);
-      intervals.push(50 + eased * 280);
+      const ms = 50 + eased * 280;
+      intervals.push(ms);
+      totalSpinMs += ms;
     }
 
+    Sound.drumroll(totalSpinMs / 1000);
     revealWindow.classList.add("spinning");
     teamCardEl.classList.remove("locked");
 
     let i = 0;
     function step() {
       if (i >= sequence.length) {
-        // Lock in
         revealWindow.classList.remove("spinning");
         teamCardEl.classList.add("locked");
         teamFlagEl.textContent = pick.team.flag;
         teamNameEl.textContent = pick.team.name;
-        drawStatus.textContent = `${pick.picker} picks ${pick.team.name}!`;
+        Sound.stinger();
+        fireConfetti("small");
+        drawStatus.textContent = `${pick.picker} picks ${pick.team.name}`;
+        commentaryEl.textContent = pickedCommentary(pick);
+        commentaryEl.classList.add("visible");
         appendTeamToPlayer(pick.picker, pick.team, pick.pot);
         isRevealing = false;
         currentPickIdx++;
-
-        if (currentPickIdx >= DRAW_PLAN.picks.length) {
-          // Draw complete
-          setTimeout(() => {
-            completeBanner.classList.add("active");
-            setRevealFinished();
-            document.querySelectorAll(".pick-chip").forEach(c => {
-              c.classList.remove("current");
-              c.classList.add("done");
-            });
-          }, 1000);
-        } else {
-          setTimeout(() => {
-            // Mark previous picker as done
-            const prev = pick.picker;
-            const allDone = DRAW_PLAN.picks
-              .slice(0, currentPickIdx)
-              .filter(p => p.picker === prev).length;
-            if (allDone >= 6) {
-              const chip = document.querySelector(`.pick-chip[data-player="${prev}"]`);
-              if (chip) chip.classList.add("done");
-            }
-            updateHeader();
-            setRevealReady();
-          }, 1200);
-        }
+        advanceAfterPick(pick);
         return;
       }
       const t = sequence[i];
       teamFlagEl.textContent = t.flag;
       teamNameEl.textContent = t.name;
+      if (i > totalSpins - 6) Sound.tick();
       setTimeout(step, intervals[i]);
       i++;
     }
     step();
   }
 
+  function advanceAfterPick(pick) {
+    if (currentPickIdx >= DRAW_PLAN.picks.length) {
+      setTimeout(() => {
+        completeBanner.classList.add("active");
+        setRevealFinished();
+        Sound.fanfare();
+        fireConfetti("big");
+        document.querySelectorAll(".pick-chip").forEach(c => {
+          c.classList.remove("current");
+          c.classList.add("done");
+        });
+        completeBanner.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        const prev = pick.picker;
+        const allDone = DRAW_PLAN.picks.slice(0, currentPickIdx)
+          .filter(p => p.picker === prev).length;
+        if (allDone >= 6) {
+          const chip = document.querySelector(`.pick-chip[data-player="${prev}"]`);
+          if (chip) {
+            chip.classList.remove("current");
+            chip.classList.add("done");
+          }
+        }
+        updateHeader();
+        setRevealReady();
+      }, 1200);
+    }
+  }
+
   drawButton.addEventListener("click", () => {
+    Sound.unlock();
     if (isRevealing) return;
     if (currentPickIdx >= DRAW_PLAN.picks.length) return;
     const pick = DRAW_PLAN.picks[currentPickIdx];
     spinAndReveal(pick);
+  });
+
+  // =====================================================================
+  // SOUND TOGGLE
+  // =====================================================================
+
+  const soundToggleBtn = $("sound-toggle");
+  const soundIcon = $("sound-icon");
+  const soundLabel = $("sound-label");
+
+  function updateSoundUI() {
+    const muted = Sound.isMuted();
+    soundIcon.textContent = muted ? "🔇" : "🔊";
+    soundLabel.textContent = muted ? "Muted" : "Sound";
+  }
+  updateSoundUI();
+
+  soundToggleBtn.addEventListener("click", () => {
+    Sound.toggle();
+    Sound.unlock();
+    updateSoundUI();
+  });
+
+  // =====================================================================
+  // EXPORT
+  // =====================================================================
+
+  const exportPngBtn = $("export-png");
+  const copyResultsBtn = $("copy-results");
+
+  exportPngBtn.addEventListener("click", async () => {
+    if (typeof html2canvas !== "function") {
+      alert("Image export is still loading — try again in a sec.");
+      return;
+    }
+    const original = exportPngBtn.textContent;
+    exportPngBtn.textContent = "Rendering…";
+    exportPngBtn.disabled = true;
+    try {
+      const node = document.getElementById("results-board-wrap");
+      const canvas = await html2canvas(node, {
+        backgroundColor: "#0a0a0a",
+        scale: 2,
+        useCORS: true,
+        windowWidth: document.documentElement.scrollWidth,
+      });
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "we-are-eight-world-cup-2026.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Couldn't generate the image. Try the copy-as-text option instead.");
+    } finally {
+      exportPngBtn.textContent = original;
+      exportPngBtn.disabled = false;
+    }
+  });
+
+  copyResultsBtn.addEventListener("click", async () => {
+    const lines = ["★ WE ARE EIGHT ★ 2026 World Cup Sweepstake — Final Draw", ""];
+    PLAYERS.forEach(name => {
+      const teams = playerPicks[name];
+      lines.push(`${name.toUpperCase()}`);
+      teams.forEach(t => {
+        lines.push(`  ${t.team.flag} ${t.team.name} (Pot ${t.pot})`);
+      });
+      lines.push("");
+    });
+    const text = lines.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      const original = copyResultsBtn.textContent;
+      copyResultsBtn.textContent = "✓ Copied";
+      setTimeout(() => { copyResultsBtn.textContent = original; }, 1500);
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      copyResultsBtn.textContent = "✓ Copied";
+    }
+  });
+
+  // =====================================================================
+  // REPLAY
+  // =====================================================================
+
+  const replayBtn = $("replay-btn");
+
+  function resetDrawState() {
+    currentPickIdx = 0;
+    isRevealing = false;
+    PLAYERS.forEach(p => playerPicks[p] = []);
+    // Clear results
+    PLAYERS.forEach(name => {
+      const ul = document.getElementById(`player-teams-${name}`);
+      if (ul) ul.innerHTML = "";
+      const counter = document.querySelector(`.team-count[data-name="${name}"]`);
+      if (counter) counter.textContent = "0 / 6";
+      const card = document.getElementById(`player-card-${name}`);
+      if (card) card.classList.remove("is-current");
+    });
+    // Reset feed
+    feedListEl.innerHTML = '<li class="feed-empty">Picks will appear here as the draw unfolds.</li>';
+    // Reset strength meter
+    updateStrengthMeter();
+    // Reset pick order chips
+    document.querySelectorAll(".pick-chip").forEach(c => {
+      c.classList.remove("done");
+      c.classList.remove("current");
+    });
+    // Reset banner
+    completeBanner.classList.remove("active");
+    // Reset arena
+    teamCardEl.classList.remove("locked");
+    commentaryEl.classList.remove("visible");
+    commentaryEl.textContent = "";
+    setRevealReady();
+    updateHeader();
+  }
+
+  replayBtn.addEventListener("click", () => {
+    resetDrawState();
+    // Scroll back to the arena
+    document.querySelector(".arena").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // =====================================================================
+  // KEYBOARD
+  // =====================================================================
+
+  document.addEventListener("keydown", (e) => {
+    // Space / Enter triggers next pick (when not focused in a text field)
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.code === "Space" || e.code === "Enter") {
+      e.preventDefault();
+      if (drawStarted && !drawButton.disabled) {
+        drawButton.click();
+      }
+    }
+    // 'M' to toggle mute
+    if (e.key === "m" || e.key === "M") {
+      soundToggleBtn.click();
+    }
   });
 
   // =====================================================================
@@ -1192,9 +2182,8 @@
 
   renderPickOrder();
   renderResultsBoard();
+  updateStrengthMeter();  // initial render (all zeros)
 
-  // If you load the page AFTER the draw time, skip straight to the draft
-  // stage so latecomers can still run through the draw.
   if (Date.now() >= DRAW_TS) {
     startDraw();
   }
