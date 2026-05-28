@@ -370,6 +370,58 @@
     text-transform: uppercase;
   }
 
+  .reminder-cta {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .reminder-btn {
+    appearance: none;
+    border: 1px solid var(--liberty);
+    background: transparent;
+    color: var(--liberty);
+    font-family: var(--display);
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .reminder-btn:hover {
+    background: var(--liberty);
+    color: var(--black);
+  }
+
+  .reminder-btn .icon-bell {
+    display: inline-block;
+    transform: translateY(-1px);
+  }
+
+  .reminder-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--bone-dim);
+    text-transform: uppercase;
+    max-width: 360px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 720px) {
+    .reminder-cta { flex-direction: column; align-items: flex-start; }
+    .reminder-btn { width: 100%; justify-content: center; }
+  }
+
   /* =============== DRAFT STAGE =============== */
 
   .draft-stage {
@@ -948,6 +1000,72 @@
     color: var(--liberty);
   }
 
+  /* =============== PAY CALLOUT =============== */
+
+  .pay-callout {
+    margin-top: 32px;
+    background: var(--black);
+    border: 2px solid var(--black);
+    padding: 24px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 640px;
+  }
+
+  .pay-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--liberty-bright);
+    margin-bottom: 8px;
+  }
+
+  .pay-amount {
+    font-family: var(--display);
+    font-size: clamp(24px, 4vw, 34px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--bone);
+    letter-spacing: -0.01em;
+  }
+
+  .pay-btn {
+    appearance: none;
+    border: 2px solid var(--liberty);
+    background: var(--liberty);
+    color: var(--black);
+    font-family: var(--display);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 16px 26px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pay-btn:hover {
+    background: var(--liberty-bright);
+    border-color: var(--liberty-bright);
+    transform: translateY(-2px);
+  }
+
+  .pay-btn:active { transform: translateY(0); }
+
+  @media (max-width: 720px) {
+    .pay-callout { flex-direction: column; align-items: stretch; }
+    .pay-btn { justify-content: center; }
+  }
+
   /* =============== RESULTS BOARD =============== */
 
   .results-board {
@@ -1218,7 +1336,7 @@
     <div class="hero-tagline">
       <p class="hero-blurb">
         Eight gentlemen. Forty-eight teams. <strong>Six picks each.</strong>
-        A FIFA-seeded snake draft, run live at four o'clock, on the day the
+        A seeded snake draft, run live at half seven, on the day the
         beautiful game came home to the lads' lounge.
       </p>
       <div class="hero-stats">
@@ -1255,7 +1373,16 @@
         <div class="cd-value" id="cd-s">00</div>
       </div>
     </div>
-    <div class="draw-time-note" id="draw-time-note">Draw begins at 16:00 UK</div>
+    <div class="draw-time-note" id="draw-time-note">Draw begins at 19:30 UK</div>
+    <div class="reminder-cta">
+      <button class="reminder-btn" id="reminder-btn">
+        <span class="icon-bell">🔔</span>
+        <span>Remind me 5 min before</span>
+      </button>
+      <div class="reminder-hint">
+        Adds the draw to your calendar with a 5-minute alarm. Works on iPhone, Android, and desktop.
+      </div>
+    </div>
   </section>
 
   <!-- DRAFT STAGE -->
@@ -1263,7 +1390,7 @@
     <div class="stage-meta">
       <div class="round-info">
         <div class="round-number" id="round-number">Round 1<span class="of"> / 6</span></div>
-        <div class="pot-tag" id="pot-label">Pot 1 — The Seeded Twelve</div>
+        <div class="pot-tag" id="pot-label">Pot 1 — The Favourites</div>
       </div>
       <div class="pick-counter" id="pick-counter">Pick 1 / 48</div>
     </div>
@@ -1319,6 +1446,16 @@
       <button class="export-btn secondary" id="copy-results">📋 Copy as Text</button>
       <button class="export-btn secondary" id="replay-btn">↻ Replay Draw</button>
     </div>
+
+    <div class="pay-callout">
+      <div class="pay-text">
+        <div class="pay-label">★ Settle Up ★</div>
+        <div class="pay-amount">£10 entry — pay Rob</div>
+      </div>
+      <a class="pay-btn" href="https://monzo.me/robking7/10.00?h=-OVW9p&account_type=personal" target="_blank" rel="noopener noreferrer">
+        💸 Pay £10 via Monzo
+      </a>
+    </div>
   </section>
 
   <!-- RESULTS BOARD -->
@@ -1332,8 +1469,8 @@
     <div class="section-label">★ Method ★</div>
     <div class="method-grid">
       <div class="method-cell">
-        <h4>Four Pots</h4>
-        <p>The official FIFA seeding. Twelve teams in each, ranked top to bottom. Pot 1 is your Spains and Brazils; Pot 4 is your Curaçaos and your Iraqs.</p>
+        <h4>Six Pots</h4>
+        <p>Forty-eight teams seeded into six pots of eight, ranked top to bottom. Pot 1 is your Frances and Brazils; Pot 6 is your Curaçaos and your Haitis.</p>
       </div>
       <div class="method-cell">
         <h4>Snake Draft</h4>
@@ -1341,7 +1478,7 @@
       </div>
       <div class="method-cell">
         <h4>Six Rounds</h4>
-        <p>Pots drawn through in order. Every player walks away with one or two teams from every pot. No empires, no graveyards.</p>
+        <p>One pot per round, drawn in order. Every player walks away with exactly one team from every pot. Perfectly balanced — no empires, no graveyards.</p>
       </div>
       <div class="method-cell">
         <h4>Seeded Random</h4>
@@ -1365,87 +1502,88 @@
 
   const PLAYERS = ["Rob", "Evan", "Jimmy", "Harry", "Sandy", "Joe", "Jord", "Josh"];
 
-  // Official 2026 FIFA World Cup draw pots, with all 6 playoff winners
-  // resolved. UEFA playoff winners: Sweden, Türkiye, Bosnia & Herzegovina,
-  // Czechia. Inter-confederation: Iraq, DR Congo.
+  // 2026 World Cup sweepstake pots — 6 pots of 8, seeded by strength.
   const POTS = {
     1: [
-      { name: "Spain",        flag: "🇪🇸" },
-      { name: "Argentina",    flag: "🇦🇷" },
       { name: "France",       flag: "🇫🇷" },
       { name: "England",      flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
       { name: "Brazil",       flag: "🇧🇷" },
+      { name: "Argentina",    flag: "🇦🇷" },
+      { name: "Spain",        flag: "🇪🇸" },
       { name: "Portugal",     flag: "🇵🇹" },
-      { name: "Netherlands",  flag: "🇳🇱" },
-      { name: "Belgium",      flag: "🇧🇪" },
       { name: "Germany",      flag: "🇩🇪" },
-      { name: "USA",          flag: "🇺🇸" },
-      { name: "Mexico",       flag: "🇲🇽" },
-      { name: "Canada",       flag: "🇨🇦" },
+      { name: "Netherlands",  flag: "🇳🇱" },
     ],
     2: [
-      { name: "Croatia",      flag: "🇭🇷" },
-      { name: "Morocco",      flag: "🇲🇦" },
+      { name: "Norway",       flag: "🇳🇴" },
+      { name: "Belgium",      flag: "🇧🇪" },
       { name: "Colombia",     flag: "🇨🇴" },
+      { name: "Japan",        flag: "🇯🇵" },
+      { name: "Morocco",      flag: "🇲🇦" },
+      { name: "USA",          flag: "🇺🇸" },
       { name: "Uruguay",      flag: "🇺🇾" },
       { name: "Switzerland",  flag: "🇨🇭" },
-      { name: "Japan",        flag: "🇯🇵" },
-      { name: "Senegal",      flag: "🇸🇳" },
-      { name: "Iran",         flag: "🇮🇷" },
-      { name: "South Korea",  flag: "🇰🇷" },
-      { name: "Ecuador",      flag: "🇪🇨" },
-      { name: "Austria",      flag: "🇦🇹" },
-      { name: "Australia",    flag: "🇦🇺" },
     ],
     3: [
-      { name: "Norway",       flag: "🇳🇴" },
-      { name: "Panama",       flag: "🇵🇦" },
-      { name: "Egypt",        flag: "🇪🇬" },
-      { name: "Algeria",      flag: "🇩🇿" },
-      { name: "Scotland",     flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-      { name: "Paraguay",     flag: "🇵🇾" },
-      { name: "Tunisia",      flag: "🇹🇳" },
-      { name: "Ivory Coast",  flag: "🇨🇮" },
-      { name: "Uzbekistan",   flag: "🇺🇿" },
-      { name: "Qatar",        flag: "🇶🇦" },
-      { name: "Saudi Arabia", flag: "🇸🇦" },
-      { name: "South Africa", flag: "🇿🇦" },
+      { name: "Türkiye",      flag: "🇹🇷" },
+      { name: "Mexico",       flag: "🇲🇽" },
+      { name: "Croatia",      flag: "🇭🇷" },
+      { name: "Ecuador",      flag: "🇪🇨" },
+      { name: "Sweden",       flag: "🇸🇪" },
+      { name: "Senegal",      flag: "🇸🇳" },
+      { name: "Canada",       flag: "🇨🇦" },
+      { name: "Austria",      flag: "🇦🇹" },
     ],
     4: [
-      { name: "Jordan",       flag: "🇯🇴" },
-      { name: "Cape Verde",   flag: "🇨🇻" },
-      { name: "Ghana",        flag: "🇬🇭" },
-      { name: "Curaçao",      flag: "🇨🇼" },
-      { name: "Haiti",        flag: "🇭🇹" },
-      { name: "New Zealand",  flag: "🇳🇿" },
-      { name: "Sweden",       flag: "🇸🇪" },
-      { name: "Türkiye",      flag: "🇹🇷" },
+      { name: "Paraguay",     flag: "🇵🇾" },
+      { name: "Scotland",     flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
       { name: "Bosnia & Herzegovina", flag: "🇧🇦" },
+      { name: "Ivory Coast",  flag: "🇨🇮" },
+      { name: "Egypt",        flag: "🇪🇬" },
       { name: "Czechia",      flag: "🇨🇿" },
-      { name: "Iraq",         flag: "🇮🇶" },
+      { name: "Ghana",        flag: "🇬🇭" },
+      { name: "Algeria",      flag: "🇩🇿" },
+    ],
+    5: [
+      { name: "South Korea",  flag: "🇰🇷" },
+      { name: "Tunisia",      flag: "🇹🇳" },
+      { name: "Australia",    flag: "🇦🇺" },
+      { name: "Iran",         flag: "🇮🇷" },
       { name: "DR Congo",     flag: "🇨🇩" },
+      { name: "South Africa", flag: "🇿🇦" },
+      { name: "Saudi Arabia", flag: "🇸🇦" },
+      { name: "Qatar",        flag: "🇶🇦" },
+    ],
+    6: [
+      { name: "Panama",       flag: "🇵🇦" },
+      { name: "Uzbekistan",   flag: "🇺🇿" },
+      { name: "New Zealand",  flag: "🇳🇿" },
+      { name: "Iraq",         flag: "🇮🇶" },
+      { name: "Curaçao",      flag: "🇨🇼" },
+      { name: "Cape Verde",   flag: "🇨🇻" },
+      { name: "Jordan",       flag: "🇯🇴" },
+      { name: "Haiti",        flag: "🇭🇹" },
     ],
   };
 
   const POT_LABELS = {
-    1: "Pot 1 — The Seeded Twelve",
+    1: "Pot 1 — The Favourites",
     2: "Pot 2 — The Contenders",
-    3: "Pot 3 — The Dark Horses",
-    4: "Pot 4 — The Wild Cards",
+    3: "Pot 3 — The Challengers",
+    4: "Pot 4 — The Dark Horses",
+    5: "Pot 5 — The Outsiders",
+    6: "Pot 6 — The Wild Cards",
   };
 
-  // Squad strength scoring. Higher pot = stronger team. We give a bonus
-  // to top-tier Pot 1 sides since not all "Pot 1" teams are equal — Spain
-  // is a stronger pick than Canada — but kept simple: index within pot
-  // gives a small tiebreaker.
-  const POT_BASE_SCORE = { 1: 10, 2: 6, 3: 3, 4: 1 };
+  // Squad strength scoring. Higher pot = stronger team, plus a small
+  // tiebreaker for position within the pot (pots are seeded by strength).
+  const POT_BASE_SCORE = { 1: 12, 2: 9, 3: 7, 4: 5, 5: 3, 6: 1 };
 
   function teamStrength(team, pot) {
     const base = POT_BASE_SCORE[pot];
     const idx = POTS[pot].findIndex(t => t.name === team.name);
-    // Earlier in the pot list = stronger (the pots were ordered by FIFA rank).
-    // Small bonus, max ~2 points, decreasing.
-    const positionBonus = Math.max(0, (12 - idx) / 12) * 2;
+    // Earlier in the pot list = stronger. Small bonus, max ~1.5 points.
+    const positionBonus = Math.max(0, (8 - idx) / 8) * 1.5;
     return Math.round((base + positionBonus) * 10) / 10;
   }
 
@@ -1460,21 +1598,35 @@
       "A statement pick from {p}. The room goes quiet.",
     ],
     2: [
-      "{p} picks up a side with real bite.",
-      "A handy second pot pick for {p} — that team's got legs.",
-      "Solid as a rock, says {p}. Probably.",
-      "{p} grabs a sneaky semis contender.",
-      "Not flashy. Not weak. Exactly what {p} needed.",
+      "{p} picks up a genuine contender.",
+      "A heavyweight second pick for {p}.",
+      "{p} grabs a side that could go deep.",
+      "Strong. Reliable. {p} won't complain about that.",
+      "{p} bolsters the portfolio with a real one.",
     ],
     3: [
+      "{p} adds a tricky customer to the collection.",
+      "A solid mid-tier pick for {p}.",
+      "{p} lands a side that beats anyone on their day.",
+      "Nobody wants to draw {p}'s lot in the group.",
+      "{p} grabs a dangerous floater.",
+    ],
+    4: [
       "{p} takes a punt. Could go either way.",
-      "A wild card lands with {p}.",
+      "A dark horse lands with {p}.",
       "{p} bets on the underdog. Bold.",
       "Group-stage hopeful for {p} — but you never know.",
       "{p} adds a piece nobody else wanted to predict.",
     ],
-    4: [
-      "{p} draws a dark horse from the wild card pot.",
+    5: [
+      "{p} digs into the outsiders. Brave.",
+      "A long shot joins {p}'s ranks.",
+      "{p} is playing the percentages here. Barely.",
+      "Every sweepstake needs a {p}-style gamble.",
+      "{p}: 'They'll surprise people.' We'll see.",
+    ],
+    6: [
+      "{p} draws a wild card from the bottom pot.",
       "{p}'s portfolio takes a chaotic turn.",
       "Stranger things have happened. {p} clings to that hope.",
       "{p}: 'I meant to draw that team.' Sure.",
@@ -1620,9 +1772,9 @@
   // =====================================================================
 
   function getDrawTimestamp() {
-    // 16:00 BST == 15:00 UTC. Today.
+    // 19:30 BST == 18:30 UTC. Today.
     const now = new Date();
-    return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 15, 0, 0, 0);
+    return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 30, 0, 0);
   }
   const DRAW_TS = getDrawTimestamp();
 
@@ -1652,27 +1804,22 @@
   function buildDrawPlan() {
     const rng = mulberry32(DRAW_TS);
     const pickOrder = seededShuffle(PLAYERS, rng);
-    const potOrders = {};
-    for (const p of [1, 2, 3, 4]) {
-      potOrders[p] = seededShuffle(POTS[p], rng);
+
+    // Shuffle each pot's internal draw order.
+    const potQueue = {};
+    for (const p of [1, 2, 3, 4, 5, 6]) {
+      potQueue[p] = seededShuffle(POTS[p], rng);
     }
-    const potQueue = {
-      1: potOrders[1].slice(),
-      2: potOrders[2].slice(),
-      3: potOrders[3].slice(),
-      4: potOrders[4].slice(),
-    };
     const draw = (pot) => potQueue[pot].shift();
 
-    const potSchedule = [];
-    for (const p of [1, 2, 3, 4]) for (let i = 0; i < 12; i++) potSchedule.push(p);
-
+    // 6 rounds, one per pot. Each player gets exactly one team from each
+    // pot. Snake the pick order each round so first-pick alternates.
     const picks = [];
     for (let round = 0; round < 6; round++) {
+      const pot = round + 1;
       const order = (round % 2 === 0) ? pickOrder : pickOrder.slice().reverse();
       for (let i = 0; i < 8; i++) {
         const globalIdx = round * 8 + i;
-        const pot = potSchedule[globalIdx];
         const team = draw(pot);
         picks.push({
           round: round + 1,
@@ -2155,6 +2302,76 @@
     resetDrawState();
     // Scroll back to the arena
     document.querySelector(".arena").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // =====================================================================
+  // CALENDAR REMINDER (.ics with 5-minute alarm)
+  // =====================================================================
+
+  const reminderBtn = $("reminder-btn");
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+
+  function icsStamp(date) {
+    return (
+      date.getUTCFullYear() +
+      pad2(date.getUTCMonth() + 1) +
+      pad2(date.getUTCDate()) + "T" +
+      pad2(date.getUTCHours()) +
+      pad2(date.getUTCMinutes()) +
+      pad2(date.getUTCSeconds()) + "Z"
+    );
+  }
+
+  function buildIcs() {
+    const start = new Date(DRAW_TS);
+    const end = new Date(DRAW_TS + 30 * 60 * 1000);
+    const url = window.location.href.split("#")[0];
+    const uid = "sweepstake-" + DRAW_TS + "@weareeight";
+    return [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//WE ARE EIGHT//Sweepstake//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      "UID:" + uid,
+      "DTSTAMP:" + icsStamp(new Date()),
+      "DTSTART:" + icsStamp(start),
+      "DTEND:" + icsStamp(end),
+      "SUMMARY:World Cup Sweepstake \u2014 Live Draw",
+      "DESCRIPTION:The draw goes live. Eight gentlemen\\, six picks each\\, forty-eight teams. Watch here: " + url,
+      "URL:" + url,
+      "LOCATION:" + url,
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      "DESCRIPTION:Sweepstake draw in 5 minutes",
+      "TRIGGER:-PT5M",
+      "END:VALARM",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
+  }
+
+  reminderBtn.addEventListener("click", () => {
+    const ics = buildIcs();
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = "sweepstake-draw.ics";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
+
+    // Confirmation feedback
+    const label = reminderBtn.querySelector("span:last-child");
+    if (label) {
+      const original = label.textContent;
+      label.textContent = "Added to calendar ✓";
+      setTimeout(() => { label.textContent = original; }, 2500);
+    }
   });
 
   // =====================================================================
