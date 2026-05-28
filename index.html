@@ -1000,72 +1000,6 @@
     color: var(--liberty);
   }
 
-  /* =============== PAY CALLOUT =============== */
-
-  .pay-callout {
-    margin-top: 32px;
-    background: var(--black);
-    border: 2px solid var(--black);
-    padding: 24px 26px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    max-width: 640px;
-  }
-
-  .pay-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--liberty-bright);
-    margin-bottom: 8px;
-  }
-
-  .pay-amount {
-    font-family: var(--display);
-    font-size: clamp(24px, 4vw, 34px);
-    line-height: 0.95;
-    text-transform: uppercase;
-    color: var(--bone);
-    letter-spacing: -0.01em;
-  }
-
-  .pay-btn {
-    appearance: none;
-    border: 2px solid var(--liberty);
-    background: var(--liberty);
-    color: var(--black);
-    font-family: var(--display);
-    font-size: 17px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 16px 26px;
-    border-radius: 0;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-decoration: none;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .pay-btn:hover {
-    background: var(--liberty-bright);
-    border-color: var(--liberty-bright);
-    transform: translateY(-2px);
-  }
-
-  .pay-btn:active { transform: translateY(0); }
-
-  @media (max-width: 720px) {
-    .pay-callout { flex-direction: column; align-items: stretch; }
-    .pay-btn { justify-content: center; }
-  }
-
   /* =============== RESULTS BOARD =============== */
 
   .results-board {
@@ -1445,16 +1379,6 @@
       <button class="export-btn" id="export-png">📸 Download PNG</button>
       <button class="export-btn secondary" id="copy-results">📋 Copy as Text</button>
       <button class="export-btn secondary" id="replay-btn">↻ Replay Draw</button>
-    </div>
-
-    <div class="pay-callout">
-      <div class="pay-text">
-        <div class="pay-label">★ Settle Up ★</div>
-        <div class="pay-amount">£10 entry — pay Rob</div>
-      </div>
-      <a class="pay-btn" href="https://monzo.me/robking7/10.00?h=-OVW9p&account_type=personal" target="_blank" rel="noopener noreferrer">
-        💸 Pay £10 via Monzo
-      </a>
     </div>
   </section>
 
